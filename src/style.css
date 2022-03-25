@@ -86,11 +86,10 @@ body{
 }
 .ship-storage{
   display: flex;
-  flex-direction: column;
-}
-
-.carrier {
-  position: absolute;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
 }
 .ship-square {
   box-sizing: border-box;
