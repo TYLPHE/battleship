@@ -1,4 +1,12 @@
-/* *{border: 1px solid;} */
+* {
+  /* variables */
+  --width: 450px;
+  /* 
+   * --ship-square is also (450 / 12) but doesnt 
+   * calculate cleanly when using calc() 
+   */ 
+  --ship-square: 37.333px;
+}
 body{
   display: flex;
   flex-direction: column;
@@ -39,16 +47,15 @@ body{
 /* board css */
 .half, .targetCont, .peg, .square {
   box-sizing: border-box;
-  border: 1px solid;
+  border: 1px solid rgba(255, 255, 255, 0.250);
 }
 .half {
   display: flex;
   justify-content: center;
   align-items: center;
-  width: 800px;
+  width: 750px;
 
   /* board width shared with targetCont height for 1:1 aspect ratio */
-  --width: 450px;
   height: var(--width);
 }
 .targetCont {
@@ -62,6 +69,36 @@ body{
   width: 100%;
   height: 100%;
 }
+.storage-container{
+  display: flex;
+  justify-content: space-evenly;
+}
+.ship-storage-left, .ship-storage-right {
+  /* display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  align-items: center; */
+  
+  position: relative;
+  width: var(--ship-square);
+  height: 100%;
+}
+
+.destroyer,
+.carrier,
+.battleship,
+.cruiser,
+.submarine {
+  position: absolute;
+}
+
+/* top found by using flex and using a ruler to find pixel postion */
+.battleship {top: calc(27/448 * 100%)}
+.cruiser {top: calc(207/448 * 100%)}
+.destroyer {top: calc(346/448 * 100%)}
+.carrier {top: calc(50/448 * 100%)}
+.submarine {top: calc(287/448 * 100%)}
+
 .pegCont {
   display: flex;
   flex-direction: column;
@@ -75,7 +112,7 @@ body{
 
 .blank {
   box-sizing: border-box;
-  border: 1px solid rgba(255, 255, 255, 0.192);
+  border: 1px solid rgba(255, 255, 255, 0.150);
 }
 .square {
   display: flex;
@@ -84,19 +121,13 @@ body{
   height: calc(100% / 12);
   width: calc(100% / 12);
 }
-.ship-storage{
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-}
 .ship-square {
   box-sizing: border-box;
   border: 1px solid;
-  height: 37.333px;
-  width: 37.333px;
+  height: var(--ship-square);
+  width: var(--ship-square);
   display: flex;
   justify-content: center;
   align-items: center;
+  background-color: rgba(196, 255, 237, 0.233);
 }

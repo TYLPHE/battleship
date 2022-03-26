@@ -24,16 +24,11 @@ const ships = {
     destroyer: ship(2),
   },
 }
-// pickUp(ships);
-// function pickUp({ p1: { carrier } }){
-//   console.log(carrier);
-// }
 
-// place ships on gameboard
-placeShip(ships)
-function placeShip({ p1: ship }) {
+// generate ships on page
+generateShip(ships)
+function generateShip({ p1: ship }) {
   for (const key in ship) {
-    console.log(ship[key]);
     const shipClass = document.createElement('div');
     shipClass.classList.add(key);
     for (let i = 1; i <= ship[key].length; i += 1) {
@@ -44,11 +39,17 @@ function placeShip({ p1: ship }) {
 
       shipClass.appendChild(square);
     }
-    const shipStorage = document.querySelector('.ship-storage');
-    shipStorage.appendChild(shipClass);
+    const shipStorageL = document.querySelector('.ship-storage-left');
+    const shipStorageR = document.querySelector('.ship-storage-right');
+    if (shipClass.className === 'battleship' ||
+        shipClass.className === 'cruiser' ||
+        shipClass.className === 'destroyer') {
+          shipStorageL.appendChild(shipClass);
+        } else {
+          shipStorageR.appendChild(shipClass);
+        }
   }
 }
-
 
 // cell highlighting to eaily identify row and column
 highlighter();
@@ -124,50 +125,50 @@ function highlighter() {
   }
 }
 
-// click and dragable div
-placement();
-function placement() {
-  const carrierDiv = document.querySelector('.carrier');
-  carrierDiv.onmousedown = function(event) {
-    let shiftX = event.clientX - carrierDiv.getBoundingClientRect().left;
-    let shiftY = event.clientY - carrierDiv.getBoundingClientRect().top;
-  
-    carrierDiv.style.position = 'absolute';
-    carrierDiv.style.zIndex = 1000;
-    document.body.append(carrierDiv);
-  
-    moveAt(event.pageX, event.pageY);
-  
-    // moves the carrierDiv at (pageX, pageY) coordinates
-    // taking initial shifts into account
-    function moveAt(pageX, pageY) {
-      carrierDiv.style.left = pageX - shiftX + 'px';
-      carrierDiv.style.top = pageY - shiftY + 'px';
-    }
-  
-    function onMouseMove(event) {
+// click and drag ships to place on board
+placement(ships);
+function placement({ p1: ship }) {
+  for (const key in ship) {
+    const div = document.querySelector(`.${key}`)
+    div.onmousedown = function(event) {
+      let shiftX = event.clientX - div.getBoundingClientRect().left;
+      let shiftY = event.clientY - div.getBoundingClientRect().top;
+      
+      document.body.append(div);
+    
       moveAt(event.pageX, event.pageY);
-  
-      // checks for element below dragged boat.
-      carrierDiv.hidden = true;
-      let elemBelow = document.elementFromPoint(event.clientX, event.clientY)
-      if(elemBelow.id){
-        console.log(elemBelow.id)
+    
+      // moves the div at (pageX, pageY) coordinates
+      // taking initial shifts into account
+      function moveAt(pageX, pageY) {
+        div.style.left = pageX - shiftX + 'px';
+        div.style.top = pageY - shiftY + 'px';
       }
-      carrierDiv.hidden = false;
-    }
-  
-    // move the carrierDiv on mousemove
-    document.addEventListener('mousemove', onMouseMove);
-  
-    // drop the carrierDiv, remove unneeded handlers
-    carrierDiv.onmouseup = function() {
-      document.removeEventListener('mousemove', onMouseMove);
-      carrierDiv.onmouseup = null;
+    
+      function onMouseMove(event) {
+        moveAt(event.pageX, event.pageY);
+    
+        // checks for element below dragged boat.
+        div.hidden = true;
+        let elemBelow = document.elementFromPoint(event.clientX, event.clientY)
+        if(elemBelow.id){
+          console.log(elemBelow.id)
+        }
+        div.hidden = false;
+      }
+    
+      // move the div on mousemove
+      document.addEventListener('mousemove', onMouseMove);
+    
+      // drop the div, remove unneeded handlers
+      div.onmouseup = function() {
+        document.removeEventListener('mousemove', onMouseMove);
+        div.onmouseup = null;
+      };
     };
-  };
-  
-  carrierDiv.ondragstart = function() {
-    return false;
-  };
+    
+    div.ondragstart = function() {
+      return false;
+    };
+  }
 }
