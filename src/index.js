@@ -6,6 +6,7 @@ function ship(length) {
     hit: 0,
     sunk: false,
     orientation: 'v', // 'v' = vertical, 'h' = horizontal for placement
+    position: [],
   }
 }
 
@@ -36,7 +37,7 @@ function generateShip({ p1: ship }) {
       const square = document.createElement('div');
       square.classList.add('ship-square')
       square.id = `${key}-${i}`;
-      square.textContent = i;
+      square.textContent = ' ';
 
       shipClass.appendChild(square);
     }
@@ -156,22 +157,41 @@ function shipHighlight(shipSquare, div) {
   const shipLength = ships.p1[shipName].length;
   const hoverCol = numConvert(div.id.substring(1));
   const hoverRow = div.id.substring(0, 1);
-
   const toHighlight = shipLength - heldValue;
+
   if(ships.p1[shipName].orientation === 'v') {
     for (let i = 0; i <= toHighlight; i += 1) {
       const letterValue = alphaConvert(hoverRow) + i;
       const newRow = alphaConvert(letterValue);
-      const newCol = numConvert(hoverCol)
+      const newCol = numConvert(hoverCol);
       const square = document.querySelector(`.${newRow}${newCol}.ocean`);
-      square.style.backgroundColor = 'red';
+      if (square) {
+        square.style.backgroundColor = 'green';
+      }    
     }
     for (let i = 0; i < heldValue; i += 1) {
       const letterValue = alphaConvert(hoverRow) - i;
       const newRow = alphaConvert(letterValue);
       const newCol = numConvert(hoverCol)
       const square = document.querySelector(`.${newRow}${newCol}.ocean`);
-      square.style.backgroundColor = 'red';
+      if (square) {
+        square.style.backgroundColor = 'green';
+      }    
+    }
+  }
+  if (ships.p1[shipName].orientation === 'h') {
+    for (let i = 0; i <= toHighlight; i += 1) {
+      const newCol = numConvert(hoverCol + i);
+      const square = document.querySelector(`.${hoverRow}${newCol}.ocean`);
+      if (square) {
+        square.style.backgroundColor = 'green';
+      }    }
+    for (let i = 0; i < heldValue; i += 1) {
+      const newCol = numConvert(hoverCol - i);
+      const square = document.querySelector(`.${hoverRow}${newCol}.ocean`);
+      if (square) {
+        square.style.backgroundColor = 'green';
+      }
     }
   }
 }
@@ -230,24 +250,36 @@ function placement({ p1: ship }) {
   for (const key in ship) {
     const div = document.querySelector(`.${key}`);
     div.onmousedown = function(event) {
+      let activeSquare;
+      let activeShip;
+      for (const key in ships.p1) {
+        if (key === event.target.id.substring(0, event.target.id.length - 2)) {
+          activeSquare = event.target.id;
+          activeShip = event.target.id.substring(0, event.target.id.length - 2)
+        }
+      }
+      // clears previous position of ship
+      ships.p1[activeShip].position = []
+
+      // checks if mouse moved. If not, then rotate ship
+      let movedMouse = false;
+
       let shiftX = event.clientX - div.getBoundingClientRect().left;
       let shiftY = event.clientY - div.getBoundingClientRect().top;
       document.body.append(div);
       moveAt(event.pageX, event.pageY, div);
-
       // moves the div at (pageX, pageY) coordinates
       // taking initial shifts into account
       function moveAt(pageX, pageY) {
         div.style.left = pageX - shiftX + 'px';
         div.style.top = pageY - shiftY + 'px';
       }
-
-      onMouseMove(event, div);
-
       function onMouseMove(event) {
+
+        movedMouse = true;
         moveAt(event.pageX, event.pageY);
         // checks for element below dragged boat.
-        div.hidden = true;
+        div.style.display = 'none';
         let elemBelow = document.elementFromPoint(event.clientX, event.clientY)
         let currentId = '';
         if (elemBelow.id && elemBelow.classList.contains('ocean')) {
@@ -255,24 +287,51 @@ function placement({ p1: ship }) {
             currentId = elemBelow.id;
             rmHighlight();
             addHighlight(elemBelow);
-            const activeShip = event.target.id;
             for (const key in ships.p1) {
-              if (key === activeShip.substring(0, activeShip.length - 2)){
-                shipHighlight(activeShip, elemBelow);
+              //.event.target.classlist[0]
+              if (key === activeShip){
+                shipHighlight(activeSquare, elemBelow);
               }
             }
           }
         }
-        div.hidden = false;
+        // const currentShip = event.target.parentNode.classList[0];
+        for (const key in ships.p1) {
+          if (activeShip === key) {
+            if (ships.p1[activeShip].orientation === 'v') {
+              return div.style.display = 'initial';
+            } else {
+              return div.style.display = 'flex';
+            }
+          }
+        }
       }
-    
       // move the div on mousemove
       document.addEventListener('mousemove', onMouseMove);
-    
+      
       // drop the div, remove unneeded handlers
       div.onmouseup = function() {
+        // rotates ship if it was not dragged
+        if (!movedMouse) {
+          const shipClass = event.target.parentNode.classList[0]
+          let ship = document.querySelector(`.${shipClass}`);
+          ship.classList.toggle('horizontal');
+          for (const key in ships.p1) {
+            if (key === shipClass) {
+              if (ships.p1[shipClass].orientation === 'v') {
+                ships.p1[shipClass].orientation = 'h';
+                div.style.display = 'flex';
+              } else {
+                ships.p1[shipClass].orientation = 'v';
+                div.style.display = 'initial';
+              }
+            }
+          }
+        }
+        findPos(activeShip);
         rmHighlight();
         document.removeEventListener('mousemove', onMouseMove);
+        movedMouse = false;
         div.onmouseup = null;
       };
     };
@@ -281,4 +340,21 @@ function placement({ p1: ship }) {
       return false;
     };
   }
+}
+
+// find position of placed ship insert into savePos();
+function findPos(ship){
+  const ocean = document.querySelectorAll('.ocean');
+  for (let i = 0; i < ocean.length; i += 1) {
+    if (ocean[i].style.backgroundColor === 'green') {
+      savePos(ship, ocean[i].id);
+    }
+  }
+}
+
+// save position
+function savePos(ship, pos) {
+  const position = ships.p1[ship].position;
+  position.push(pos);
+  console.log(ships.p1[ship])
 }

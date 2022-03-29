@@ -76,11 +76,6 @@ body{
   justify-content: space-evenly;
 }
 .ship-storage-left, .ship-storage-right {
-  /* display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  align-items: center; */
-  
   position: relative;
   width: var(--ship-square);
   height: 100%;
@@ -132,4 +127,7 @@ body{
   justify-content: center;
   align-items: center;
   background-color: rgba(196, 255, 237, 0.233);
+}
+.horizontal {
+  display: flex;
 }
