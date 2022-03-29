@@ -6,6 +6,8 @@
    * calculate cleanly when using calc() 
    */ 
   --ship-square: 37.333px;
+
+  /* border: 1px solid yellow; */
 }
 body{
   display: flex;
