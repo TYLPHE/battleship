@@ -1,4 +1,4 @@
-// import './style.css'
+import './style.css'
 // ship constructor
 function ship(length) {
   return {
