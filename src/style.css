@@ -96,16 +96,6 @@ body{
 .carrier {top: calc(50/448 * 100%)}
 .submarine {top: calc(287/448 * 100%)}
 
-.pegCont {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-}
-
-.redCont, .whiteCont {
-  height: 40%;
-  text-align: center;
-}
 
 .blank {
   box-sizing: border-box;
@@ -130,4 +120,49 @@ body{
 }
 .horizontal {
   display: flex;
+}
+
+/* pegs */
+.peg-cont {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+
+.white-cont {
+  height: 75%;
+}
+.red-cont {
+  height: 20%;
+}
+.white-peg-cont, .red-peg-cont {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+.white-peg {
+  border: 1px solid;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  margin: -.62rem -.62rem;
+  background-color: rgb(218, 218, 218);
+}
+.red-peg {
+  border: 1px solid;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: black;
+  margin: -.62rem -.68rem;
+  background-color: rgb(149, 22, 22);
 }

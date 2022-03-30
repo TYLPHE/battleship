@@ -244,7 +244,7 @@ function numConvert(str) {
   }
 }
 
-// click and drag ships to place on board
+// populate ships to place on board
 placement(ships);
 function placement({ p1: ship }) {
   for (const key in ship) {
@@ -253,9 +253,10 @@ function placement({ p1: ship }) {
       let activeSquare;
       let activeShip;
       for (const key in ships.p1) {
-        if (key === event.target.id.substring(0, event.target.id.length - 2)) {
-          activeSquare = event.target.id;
-          activeShip = event.target.id.substring(0, event.target.id.length - 2)
+        let active = event.target.id;
+        if (key === active.substring(0, active.length - 2)) {
+          activeSquare = active;
+          activeShip = active.substring(0, active.length - 2)
         }
       }
       // clears previous position of ship
@@ -357,4 +358,47 @@ function savePos(ship, pos) {
   const position = ships.p1[ship].position;
   position.push(pos);
   console.log(ships.p1[ship])
+}
+
+addMarkers();
+function addMarkers() {
+  const whiteElem = document.querySelector('.white-peg-cont');
+  for (let i = 0; i < 2*(100-17); i += 1) {
+    const peg = document.createElement('div');
+    peg.classList.add('white-peg');
+    peg.textContent = ' ';
+    peg.addEventListener('mousedown', (e) => clickDrag(e, peg));
+    whiteElem.appendChild(peg);
+  }
+  const redElem = document.querySelector('.red-peg-cont');
+  for (let i = 0; i < 17*2; i += 1) {
+    const peg = document.createElement('div');
+    peg.classList.add('red-peg');
+    peg.textContent = ' ';
+    peg.addEventListener('mousedown', (e) => clickDrag(e, peg));
+    redElem.appendChild(peg);
+  }
+}
+
+function clickDrag(event, elem) {
+  elem.style.position = 'absolute';
+  elem.style.margin = 0;
+  document.body.append(elem);
+
+  function moveAt(pageX, pageY) {
+    elem.style.left = pageX - elem.offsetWidth / 2 + 'px';
+    elem.style.top = pageY - elem.offsetHeight / 2 + 'px';
+  }
+  moveAt(event.pageX, event.pageY);
+
+  function onMouseMove(event) {
+    moveAt(event.pageX, event.pageY);
+  }
+
+  document.addEventListener('mousemove', onMouseMove);
+
+  elem.onmouseup = function () {
+    document.removeEventListener('mousemove', onMouseMove);
+    elem.onmouseup = null;
+  }
 }
