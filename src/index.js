@@ -128,15 +128,15 @@ function highlighter() {
 }
 
 // cell highlighting while dragging item
-function addHighlight(elem) {
+function addHighlight(elem, /*'ocean' or 'target'*/side) {
   const row = elem.id.substring(0,1);
-  const rowEnd = document.querySelectorAll(`.ocean.${row}`);
+  const rowEnd = document.querySelectorAll(`.${side}.${row}`);
   for (let i = 0; i < rowEnd.length; i += 1) {
     rowEnd[i].style.backgroundColor = '#90ee9050';
   }
 
   const col = elem.id.slice(1);
-  const colEnd = document.querySelectorAll(`.ocean.${col}`);
+  const colEnd = document.querySelectorAll(`.${side}.${col}`);
   for (let i = 0; i < colEnd.length; i +=1 ) {
     colEnd[i].style.backgroundColor = '#90ee9050';
   }
@@ -144,7 +144,7 @@ function addHighlight(elem) {
 
 // removes all highlighted side squares
 function rmHighlight() {
-  const sides = document.querySelectorAll('.ocean.square');
+  const sides = document.querySelectorAll('.square');
   for (let i = 0; i < sides.length; i += 1) {
     sides[i].style.backgroundColor = 'transparent';
   }
@@ -244,6 +244,23 @@ function numConvert(str) {
   }
 }
 
+// find position of placed ship insert into savePos();
+function findPos(ship){
+  const ocean = document.querySelectorAll('.ocean');
+  for (let i = 0; i < ocean.length; i += 1) {
+    if (ocean[i].style.backgroundColor === 'green') {
+      savePos(ship, ocean[i].id);
+    }
+  }
+}
+
+// save position
+function savePos(ship, pos) {
+  const position = ships.p1[ship].position;
+  position.push(pos);
+  console.log(ships.p1[ship])
+}
+
 // populate ships to place on board
 placement(ships);
 function placement({ p1: ship }) {
@@ -275,28 +292,27 @@ function placement({ p1: ship }) {
         div.style.left = pageX - shiftX + 'px';
         div.style.top = pageY - shiftY + 'px';
       }
+      let currentId = '';
       function onMouseMove(event) {
-
         movedMouse = true;
         moveAt(event.pageX, event.pageY);
         // checks for element below dragged boat.
         div.style.display = 'none';
         let elemBelow = document.elementFromPoint(event.clientX, event.clientY)
-        let currentId = '';
-        if (elemBelow.id && elemBelow.classList.contains('ocean')) {
-          if (!currentId || elemBelow.id !== currentId) {
-            currentId = elemBelow.id;
-            rmHighlight();
-            addHighlight(elemBelow);
-            for (const key in ships.p1) {
-              //.event.target.classlist[0]
-              if (key === activeShip){
-                shipHighlight(activeSquare, elemBelow);
-              }
+        if (elemBelow.classList.contains('ocean') && 
+            elemBelow.id &&
+            elemBelow.id !== currentId
+            ) {
+          currentId = elemBelow.id;
+          rmHighlight();
+          addHighlight(elemBelow, 'ocean');
+          for (const key in ships.p1) {
+            //.event.target.classlist[0]
+            if (key === activeShip){
+              shipHighlight(activeSquare, elemBelow);
             }
           }
         }
-        // const currentShip = event.target.parentNode.classList[0];
         for (const key in ships.p1) {
           if (activeShip === key) {
             if (ships.p1[activeShip].orientation === 'v') {
@@ -343,23 +359,6 @@ function placement({ p1: ship }) {
   }
 }
 
-// find position of placed ship insert into savePos();
-function findPos(ship){
-  const ocean = document.querySelectorAll('.ocean');
-  for (let i = 0; i < ocean.length; i += 1) {
-    if (ocean[i].style.backgroundColor === 'green') {
-      savePos(ship, ocean[i].id);
-    }
-  }
-}
-
-// save position
-function savePos(ship, pos) {
-  const position = ships.p1[ship].position;
-  position.push(pos);
-  console.log(ships.p1[ship])
-}
-
 addMarkers();
 function addMarkers() {
   const whiteElem = document.querySelector('.white-peg-cont');
@@ -367,7 +366,7 @@ function addMarkers() {
     const peg = document.createElement('div');
     peg.classList.add('white-peg');
     peg.textContent = ' ';
-    peg.addEventListener('mousedown', (e) => clickDrag(e, peg));
+    peg.addEventListener('mousedown', (e) => clickDragMarker(e, peg));
     whiteElem.appendChild(peg);
   }
   const redElem = document.querySelector('.red-peg-cont');
@@ -375,30 +374,53 @@ function addMarkers() {
     const peg = document.createElement('div');
     peg.classList.add('red-peg');
     peg.textContent = ' ';
-    peg.addEventListener('mousedown', (e) => clickDrag(e, peg));
+    peg.addEventListener('mousedown', (e) => clickDragMarker(e, peg));
     redElem.appendChild(peg);
   }
 }
 
-function clickDrag(event, elem) {
+function clickDragMarker(event, elem) {
   elem.style.position = 'absolute';
   elem.style.margin = 0;
   document.body.append(elem);
 
+  moveAt(event.pageX, event.pageY);
   function moveAt(pageX, pageY) {
     elem.style.left = pageX - elem.offsetWidth / 2 + 'px';
     elem.style.top = pageY - elem.offsetHeight / 2 + 'px';
   }
-  moveAt(event.pageX, event.pageY);
 
+  let currentId = '';
   function onMouseMove(event) {
     moveAt(event.pageX, event.pageY);
+
+    elem.style.display = 'none';
+    let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+    if (elemBelow.id && elemBelow.id !== currentId) {
+      currentId = elemBelow.id;
+      rmHighlight();
+      elemBelow.style.backgroundColor = 'green';
+      console.log(elemBelow)
+      if (elemBelow.classList.contains('ocean')) {
+        addHighlight(elemBelow, 'ocean');
+      }
+      if (elemBelow.classList.contains('target')) {
+        addHighlight(elemBelow, 'target');
+      }
+    }
+    elem.style.display = 'initial';
   }
 
   document.addEventListener('mousemove', onMouseMove);
 
   elem.onmouseup = function () {
+    stampBoard();
+    rmHighlight();
     document.removeEventListener('mousemove', onMouseMove);
     elem.onmouseup = null;
   }
+}
+
+function stampBoard() {
+  let marked = document.querySelectorAll('.square');
 }
