@@ -359,10 +359,10 @@ function placement({ p1: ship }) {
   }
 }
 
-addMarkers();
-function addMarkers() {
+addMarkers(2*(100-17), 17*2);
+function addMarkers(white, red) {
   const whiteElem = document.querySelector('.white-peg-cont');
-  for (let i = 0; i < 2*(100-17); i += 1) {
+  for (let i = 0; i < white; i += 1) {
     const peg = document.createElement('div');
     peg.classList.add('white-peg');
     peg.textContent = ' ';
@@ -370,7 +370,7 @@ function addMarkers() {
     whiteElem.appendChild(peg);
   }
   const redElem = document.querySelector('.red-peg-cont');
-  for (let i = 0; i < 17*2; i += 1) {
+  for (let i = 0; i < red; i += 1) {
     const peg = document.createElement('div');
     peg.classList.add('red-peg');
     peg.textContent = ' ';
@@ -400,7 +400,6 @@ function clickDragMarker(event, elem) {
       currentId = elemBelow.id;
       rmHighlight();
       elemBelow.style.backgroundColor = 'green';
-      console.log(elemBelow)
       if (elemBelow.classList.contains('ocean')) {
         addHighlight(elemBelow, 'ocean');
       }
@@ -412,15 +411,41 @@ function clickDragMarker(event, elem) {
   }
 
   document.addEventListener('mousemove', onMouseMove);
+  // document.addEventListener('mouseup', () => removeMarker);
 
   elem.onmouseup = function () {
-    stampBoard();
+    const marked = markerPos();
+    let markedDiv = document.querySelector(`.${marked}.ocean`);
+    if (document.body.lastChild.style.position === 'absolute' &&
+        markedDiv.childNodes.length === 0) {
+      insertMarker(marked);
+      document.body.lastChild.remove();
+    }
     rmHighlight();
     document.removeEventListener('mousemove', onMouseMove);
     elem.onmouseup = null;
   }
 }
 
-function stampBoard() {
+function markerPos() {
   let marked = document.querySelectorAll('.square');
+  for (let i = 0; i < marked.length; i += 1) {
+    if (marked[i].style.backgroundColor === 'green') {
+      const position = marked[i].classList[marked[i].classList.length-1];
+      return position;
+    }
+  }
+}
+
+function insertMarker(pos){
+  const position = document.querySelector(`.ocean.${pos}`);
+  if (position && position.childNodes.length === 0) {
+    const div = document.createElement('div');
+    div.classList.add('inserted');
+    position.appendChild(div);
+    position.addEventListener('click', () => {
+      position.removeChild(div)
+      addMarkers(1, 0)
+    }, {once : true});
+  }
 }

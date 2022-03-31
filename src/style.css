@@ -166,3 +166,11 @@ body{
   margin: -.62rem -.68rem;
   background-color: rgb(149, 22, 22);
 }
+.inserted {
+  width: 2rem;
+  height: 2rem;
+  z-index: -1;
+  background-color: lightgray;
+  border-radius: 50%;
+  border: 1px solid black;
+}
