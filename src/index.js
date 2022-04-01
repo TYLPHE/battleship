@@ -33,6 +33,7 @@ function generateShip({ p1: ship }) {
   for (const key in ship) {
     const shipClass = document.createElement('div');
     shipClass.classList.add(key);
+    shipClass.addEventListener('mousedown', (e) => placement(e, shipClass));
     for (let i = 1; i <= ship[key].length; i += 1) {
       const square = document.createElement('div');
       square.classList.add('ship-square')
@@ -51,6 +52,100 @@ function generateShip({ p1: ship }) {
       shipStorageR.appendChild(shipClass);
     }
   }
+}
+
+function placement(event, div) {
+  // bugfix for if mouse is faster than the dragging div
+  let activeSquare;
+  let activeShip;
+  for (const key in ships.p1) {
+    let active = event.target.id;
+    if (key === active.substring(0, active.length - 2)) {
+      activeSquare = active;
+      activeShip = active.substring(0, active.length - 2)
+    }
+  }
+  // clears previous position of ship
+  ships.p1[activeShip].position = []
+
+  // checks if mouse moved. If not, then rotate ship
+  let movedMouse = false;
+
+  let shiftX = event.clientX - div.getBoundingClientRect().left;
+  let shiftY = event.clientY - div.getBoundingClientRect().top;
+  document.body.append(div);
+  moveAt(event.pageX, event.pageY, div);
+  // moves the div at (pageX, pageY) coordinates
+  // taking initial shifts into account
+  function moveAt(pageX, pageY) {
+    div.style.left = pageX - shiftX + 'px';
+    div.style.top = pageY - shiftY + 'px';
+  }
+  let currentId = '';
+  function onMouseMove(event) {
+    movedMouse = true;
+    moveAt(event.pageX, event.pageY);
+    // checks for element below dragged boat.
+    div.style.display = 'none';
+    let elemBelow = document.elementFromPoint(event.clientX, event.clientY)
+    if (elemBelow.classList.contains('ocean') && 
+        elemBelow.id &&
+        elemBelow.id !== currentId
+        ) {
+      currentId = elemBelow.id;
+      rmHighlight();
+      // highlight the sides
+      addHighlight(elemBelow, 'ocean');
+      for (const key in ships.p1) {
+        //.event.target.classlist[0]
+        if (key === activeShip){
+          // highlight under the ship
+          shipHighlight(activeSquare, elemBelow);
+        }
+      }
+    }
+    // maintain orientation while dragging
+    for (const key in ships.p1) {
+      if (activeShip === key) {
+        if (ships.p1[activeShip].orientation === 'v') {
+          return div.style.display = 'initial';
+        } else {
+          return div.style.display = 'flex';
+        }
+      }
+    }
+  }
+  // move the div on mousemove
+  document.addEventListener('mousemove', onMouseMove);
+  
+  // drop the div, remove unneeded handlers
+  div.onmouseup = function() {
+    // rotates ship if it was not dragged
+    if (!movedMouse) {
+      const shipClass = event.target.parentNode.classList[0]
+      let ship = document.querySelector(`.${shipClass}`);
+      ship.classList.toggle('horizontal');
+      for (const key in ships.p1) {
+        if (key === shipClass) {
+          if (ships.p1[shipClass].orientation === 'v') {
+            ships.p1[shipClass].orientation = 'h';
+            div.style.display = 'flex';
+          } else {
+            ships.p1[shipClass].orientation = 'v';
+            div.style.display = 'initial';
+          }
+        }
+      }
+    }
+    findPos(activeShip);
+    rmHighlight();
+    document.removeEventListener('mousemove', onMouseMove);
+    movedMouse = false;
+    div.onmouseup = null;
+  };
+  div.ondragstart = function() {
+    return false;
+  };
 }
 
 // cell highlighting to eaily identify row and column
@@ -261,104 +356,6 @@ function savePos(ship, pos) {
   console.log(ships.p1[ship])
 }
 
-// populate ships to place on board
-placement(ships);
-function placement({ p1: ship }) {
-  for (const key in ship) {
-    const div = document.querySelector(`.${key}`);
-    div.onmousedown = function(event) {
-      let activeSquare;
-      let activeShip;
-      for (const key in ships.p1) {
-        let active = event.target.id;
-        if (key === active.substring(0, active.length - 2)) {
-          activeSquare = active;
-          activeShip = active.substring(0, active.length - 2)
-        }
-      }
-      // clears previous position of ship
-      ships.p1[activeShip].position = []
-
-      // checks if mouse moved. If not, then rotate ship
-      let movedMouse = false;
-
-      let shiftX = event.clientX - div.getBoundingClientRect().left;
-      let shiftY = event.clientY - div.getBoundingClientRect().top;
-      document.body.append(div);
-      moveAt(event.pageX, event.pageY, div);
-      // moves the div at (pageX, pageY) coordinates
-      // taking initial shifts into account
-      function moveAt(pageX, pageY) {
-        div.style.left = pageX - shiftX + 'px';
-        div.style.top = pageY - shiftY + 'px';
-      }
-      let currentId = '';
-      function onMouseMove(event) {
-        movedMouse = true;
-        moveAt(event.pageX, event.pageY);
-        // checks for element below dragged boat.
-        div.style.display = 'none';
-        let elemBelow = document.elementFromPoint(event.clientX, event.clientY)
-        if (elemBelow.classList.contains('ocean') && 
-            elemBelow.id &&
-            elemBelow.id !== currentId
-            ) {
-          currentId = elemBelow.id;
-          rmHighlight();
-          addHighlight(elemBelow, 'ocean');
-          for (const key in ships.p1) {
-            //.event.target.classlist[0]
-            if (key === activeShip){
-              shipHighlight(activeSquare, elemBelow);
-            }
-          }
-        }
-        for (const key in ships.p1) {
-          if (activeShip === key) {
-            if (ships.p1[activeShip].orientation === 'v') {
-              return div.style.display = 'initial';
-            } else {
-              return div.style.display = 'flex';
-            }
-          }
-        }
-      }
-      // move the div on mousemove
-      document.addEventListener('mousemove', onMouseMove);
-      
-      // drop the div, remove unneeded handlers
-      div.onmouseup = function() {
-        // rotates ship if it was not dragged
-        if (!movedMouse) {
-          const shipClass = event.target.parentNode.classList[0]
-          let ship = document.querySelector(`.${shipClass}`);
-          ship.classList.toggle('horizontal');
-          for (const key in ships.p1) {
-            if (key === shipClass) {
-              if (ships.p1[shipClass].orientation === 'v') {
-                ships.p1[shipClass].orientation = 'h';
-                div.style.display = 'flex';
-              } else {
-                ships.p1[shipClass].orientation = 'v';
-                div.style.display = 'initial';
-              }
-            }
-          }
-        }
-        findPos(activeShip);
-        rmHighlight();
-        document.removeEventListener('mousemove', onMouseMove);
-        movedMouse = false;
-        div.onmouseup = null;
-      };
-    };
-    
-    div.ondragstart = function() {
-      return false;
-    };
-  }
-}
-
 addMarkers(2*(100-17), 17*2);
 function addMarkers(white, red) {
   const whiteElem = document.querySelector('.white-peg-cont');
@@ -411,14 +408,16 @@ function clickDragMarker(event, elem) {
   }
 
   document.addEventListener('mousemove', onMouseMove);
-  // document.addEventListener('mouseup', () => removeMarker);
 
+  const clickedElem = event.target
   elem.onmouseup = function () {
+    // const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
     const marked = markerPos();
-    let markedDiv = document.querySelector(`.${marked}.ocean`);
+    let markedDiv = document.querySelector(marked);
     if (document.body.lastChild.style.position === 'absolute' &&
+        markedDiv &&
         markedDiv.childNodes.length === 0) {
-      insertMarker(marked);
+      insertMarker(marked, clickedElem);
       document.body.lastChild.remove();
     }
     rmHighlight();
@@ -431,21 +430,36 @@ function markerPos() {
   let marked = document.querySelectorAll('.square');
   for (let i = 0; i < marked.length; i += 1) {
     if (marked[i].style.backgroundColor === 'green') {
-      const position = marked[i].classList[marked[i].classList.length-1];
-      return position;
+      const square = marked[i].classList;
+      const position = square[2];
+      const half = square[0];
+      return `.${half}.${position}`;
     }
   }
 }
 
-function insertMarker(pos){
-  const position = document.querySelector(`.ocean.${pos}`);
+function insertMarker(pos, peg){
+  const position = document.querySelector(pos);
   if (position && position.childNodes.length === 0) {
     const div = document.createElement('div');
     div.classList.add('inserted');
+    if (peg.className === 'white-peg') {
+      div.style.backgroundColor = 'rgb(218, 218, 218)';
+      div.id = 'white';
+    } else {
+      div.style.backgroundColor = 'rgb(149, 22, 22)';
+      div.id = 'red';
+    }
     position.appendChild(div);
-    position.addEventListener('click', () => {
-      position.removeChild(div)
-      addMarkers(1, 0)
+    position.addEventListener('click', (e) => {
+      const color = e.target.childNodes[0].id; 
+      if (color === 'white') {
+        addMarkers(1, 0)
+      }
+      if (color === 'red') {
+        addMarkers(0, 1);
+      }
+      position.removeChild(div);
     }, {once : true});
   }
 }
