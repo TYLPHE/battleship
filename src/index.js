@@ -33,7 +33,7 @@ function generateShip({ p1: ship }) {
   for (const key in ship) {
     const shipClass = document.createElement('div');
     shipClass.classList.add(key);
-    shipClass.addEventListener('mousedown', (e) => placement(e, shipClass));
+    shipClass.addEventListener('mousedown', (e) => placement(e, shipClass, ships));
     for (let i = 1; i <= ship[key].length; i += 1) {
       const square = document.createElement('div');
       square.classList.add('ship-square')
@@ -54,11 +54,11 @@ function generateShip({ p1: ship }) {
   }
 }
 
-function placement(event, div) {
+function placement(event, div, obj) {
   // bugfix for if mouse is faster than the dragging div
   let activeSquare;
   let activeShip;
-  for (const key in ships.p1) {
+  for (const key in obj.p1) {
     let active = event.target.id;
     if (key === active.substring(0, active.length - 2)) {
       activeSquare = active;
@@ -66,7 +66,7 @@ function placement(event, div) {
     }
   }
   // clears previous position of ship
-  ships.p1[activeShip].position = []
+  obj.p1[activeShip].position = []
 
   // checks if mouse moved. If not, then rotate ship
   let movedMouse = false;
@@ -96,18 +96,17 @@ function placement(event, div) {
       rmHighlight();
       // highlight the sides
       addHighlight(elemBelow, 'ocean');
-      for (const key in ships.p1) {
-        //.event.target.classlist[0]
+      for (const key in obj.p1) {
         if (key === activeShip){
           // highlight under the ship
-          shipHighlight(activeSquare, elemBelow);
+          shipHighlight(activeSquare, elemBelow, obj);
         }
       }
     }
     // maintain orientation while dragging
-    for (const key in ships.p1) {
+    for (const key in obj.p1) {
       if (activeShip === key) {
-        if (ships.p1[activeShip].orientation === 'v') {
+        if (obj.p1[activeShip].orientation === 'v') {
           return div.style.display = 'initial';
         } else {
           return div.style.display = 'flex';
@@ -125,19 +124,28 @@ function placement(event, div) {
       const shipClass = event.target.parentNode.classList[0]
       let ship = document.querySelector(`.${shipClass}`);
       ship.classList.toggle('horizontal');
-      for (const key in ships.p1) {
+      for (const key in obj.p1) {
         if (key === shipClass) {
-          if (ships.p1[shipClass].orientation === 'v') {
-            ships.p1[shipClass].orientation = 'h';
+          if (obj.p1[shipClass].orientation === 'v') {
+            obj.p1[shipClass].orientation = 'h';
             div.style.display = 'flex';
           } else {
-            ships.p1[shipClass].orientation = 'v';
+            obj.p1[shipClass].orientation = 'v';
             div.style.display = 'initial';
           }
         }
       }
     }
-    findPos(activeShip);
+    findPos(activeShip, obj);
+    shipInsert(obj.p1)
+    // removes drag element when placed
+    let markedDiv = document.querySelector(`.${activeShip}-sailed`);
+    if ((markedDiv && document.body.lastChild.style.display === 'initial') || 
+        (markedDiv && document.body.lastChild.style.display === 'flex')        
+    ) {
+      document.body.lastChild.remove();
+    }
+
     rmHighlight();
     document.removeEventListener('mousemove', onMouseMove);
     movedMouse = false;
@@ -146,6 +154,23 @@ function placement(event, div) {
   div.ondragstart = function() {
     return false;
   };
+}
+
+// snaps dragged ships into ocean
+function shipInsert(obj) {
+  for (const key in obj) {
+    const test = obj[key].position.length;
+    if (obj[key].position.length) {
+      for (let i = 0; i < obj[key].position.length; i += 1) {
+        const div = document.createElement('div');
+        div.classList.add('on-water', `${key}-sailed`);
+        const ocean = document.querySelector(`.ocean.${obj[key].position[i]}`);
+        if (ocean.childNodes.length === 0) {
+          ocean.appendChild(div);
+        }
+      }
+    }
+  }
 }
 
 // cell highlighting to eaily identify row and column
@@ -246,15 +271,15 @@ function rmHighlight() {
 }
 
 // highlight ships position on board.
-function shipHighlight(shipSquare, div) {
+function shipHighlight(shipSquare, div, obj) {
   const shipName = shipSquare.substring(0, shipSquare.length - 2);
   const heldValue = shipSquare.slice(-1);
-  const shipLength = ships.p1[shipName].length;
+  const shipLength = obj.p1[shipName].length;
   const hoverCol = numConvert(div.id.substring(1));
   const hoverRow = div.id.substring(0, 1);
   const toHighlight = shipLength - heldValue;
 
-  if(ships.p1[shipName].orientation === 'v') {
+  if(obj.p1[shipName].orientation === 'v') {
     for (let i = 0; i <= toHighlight; i += 1) {
       const letterValue = alphaConvert(hoverRow) + i;
       const newRow = alphaConvert(letterValue);
@@ -274,7 +299,7 @@ function shipHighlight(shipSquare, div) {
       }    
     }
   }
-  if (ships.p1[shipName].orientation === 'h') {
+  if (obj.p1[shipName].orientation === 'h') {
     for (let i = 0; i <= toHighlight; i += 1) {
       const newCol = numConvert(hoverCol + i);
       const square = document.querySelector(`.${hoverRow}${newCol}.ocean`);
@@ -340,20 +365,19 @@ function numConvert(str) {
 }
 
 // find position of placed ship insert into savePos();
-function findPos(ship){
+function findPos(ship, obj){
   const ocean = document.querySelectorAll('.ocean');
   for (let i = 0; i < ocean.length; i += 1) {
     if (ocean[i].style.backgroundColor === 'green') {
-      savePos(ship, ocean[i].id);
+      savePos(ship, ocean[i].id, obj);
     }
   }
 }
 
 // save position
-function savePos(ship, pos) {
-  const position = ships.p1[ship].position;
+function savePos(ship, pos, obj) {
+  const position = obj.p1[ship].position;
   position.push(pos);
-  console.log(ships.p1[ship])
 }
 
 addMarkers(2*(100-17), 17*2);
@@ -416,7 +440,7 @@ function clickDragMarker(event, elem) {
     let markedDiv = document.querySelector(marked);
     if (document.body.lastChild.style.position === 'absolute' &&
         markedDiv &&
-        markedDiv.childNodes.length === 0) {
+        markedDiv.childNodes.length < 2) {
       insertMarker(marked, clickedElem);
       document.body.lastChild.remove();
     }
@@ -440,7 +464,9 @@ function markerPos() {
 
 function insertMarker(pos, peg){
   const position = document.querySelector(pos);
-  if (position && position.childNodes.length === 0) {
+  console.log(position);
+  console.log(position.childNodes.length)
+  if (position && position.childNodes.length < 2) {
     const div = document.createElement('div');
     div.classList.add('inserted');
     if (peg.className === 'white-peg') {

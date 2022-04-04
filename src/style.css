@@ -107,6 +107,7 @@ body{
   align-items: center;
   height: calc(100% / 12);
   width: calc(100% / 12);
+  position: relative;
 }
 .ship-square {
   box-sizing: border-box;
@@ -173,4 +174,12 @@ body{
   background-color: lightgray;
   border-radius: 50%;
   border: 1px solid black;
+}
+.on-water {
+  width: 2rem;
+  height: 2rem;
+  z-index: -2;
+  background-color: rgba(196, 255, 237, 0.233);
+  border: 1px solid;
+  position: absolute;
 }
