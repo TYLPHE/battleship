@@ -28,8 +28,8 @@ const ships = {
 }
 
 // generate ships on page
-generateShip(ships)
-function generateShip({ p1: ship }) {
+generateShip(ships.p1)
+function generateShip(ship) {
   for (const key in ship) {
     const shipClass = document.createElement('div');
     shipClass.classList.add(key);
@@ -65,8 +65,6 @@ function placement(event, div, obj) {
       activeShip = active.substring(0, active.length - 2)
     }
   }
-  // clears previous position of ship
-  obj.p1[activeShip].position = []
 
   // checks if mouse moved. If not, then rotate ship
   let movedMouse = false;
@@ -74,6 +72,7 @@ function placement(event, div, obj) {
   let shiftX = event.clientX - div.getBoundingClientRect().left;
   let shiftY = event.clientY - div.getBoundingClientRect().top;
   document.body.append(div);
+  if (!document.querySelector('.start-cont')) checkDock();
   moveAt(event.pageX, event.pageY, div);
   // moves the div at (pageX, pageY) coordinates
   // taking initial shifts into account
@@ -102,6 +101,10 @@ function placement(event, div, obj) {
           shipHighlight(activeSquare, elemBelow, obj);
         }
       }
+      // clears previous position of ship
+      obj.p1[activeShip].position = []
+      findPos(activeShip, obj);
+      verifyPos(activeShip, obj);
     }
     // maintain orientation while dragging
     for (const key in obj.p1) {
@@ -121,6 +124,9 @@ function placement(event, div, obj) {
   div.onmouseup = function() {
     // rotates ship if it was not dragged
     if (!movedMouse) {
+      obj.p1[activeShip].position = []
+      findPos(activeShip, obj);
+      verifyPos(activeShip, obj);
       const shipClass = event.target.parentNode.classList[0]
       let ship = document.querySelector(`.${shipClass}`);
       ship.classList.toggle('horizontal');
@@ -136,16 +142,15 @@ function placement(event, div, obj) {
         }
       }
     }
-    findPos(activeShip, obj);
-    shipInsert(obj.p1)
-    // removes drag element when placed
-    let markedDiv = document.querySelector(`.${activeShip}-sailed`);
-    if ((markedDiv && document.body.lastChild.style.display === 'initial') || 
-        (markedDiv && document.body.lastChild.style.display === 'flex')        
-    ) {
-      document.body.lastChild.remove();
-    }
 
+    // shipInsert(obj.p1)
+    // // removes drag element when placed
+    // let markedDiv = document.querySelector(`.${activeShip}-sailed`);
+    // if ((markedDiv && document.body.lastChild.style.display === 'initial') || 
+    //     (markedDiv && document.body.lastChild.style.display === 'flex')        
+    // ) {
+    //   document.body.lastChild.remove();
+    // }
     rmHighlight();
     document.removeEventListener('mousemove', onMouseMove);
     movedMouse = false;
@@ -156,10 +161,44 @@ function placement(event, div, obj) {
   };
 }
 
+function verifyPos(activeShip, obj) {
+  const shipObj = obj.p1[activeShip];
+  const ship = document.querySelector(`.${activeShip}`);
+  if (shipObj.length === shipObj.position.length) {
+    ship.style.backgroundColor = 'transparent';
+  }
+  if (shipObj.length !== shipObj.position.length) { 
+    shipObj.position = [];
+    ship.style.backgroundColor = 'rgba(255, 0, 0, 0.7)'
+  }
+}
+
+function checkDock() {
+  let leftDock =  document.querySelector(`.ship-storage-left`);
+  let rightDock = document.querySelector('.ship-storage-right')
+  if (leftDock.childNodes.length === 0 && rightDock.childNodes.length === 0) {
+    const container = document.querySelector('.storage-container');
+    for (let i = 0; i < container.childNodes.length; i += 1) {
+      container.childNodes[i].style.display = 'none';
+    }
+    createStart(container);
+  }
+}
+
+function createStart(div) {
+  const startCont = document.createElement('div');
+  startCont.classList.add('start-cont');
+  const pvp = document.createElement('button');
+  pvp.textContent = '2 Players';
+  const pve = document.createElement('button');
+  pve.textContent = 'Player vs CPU';
+  startCont.append(pvp, pve);
+  div.appendChild(startCont);
+}
+
 // snaps dragged ships into ocean
 function shipInsert(obj) {
   for (const key in obj) {
-    const test = obj[key].position.length;
     if (obj[key].position.length) {
       for (let i = 0; i < obj[key].position.length; i += 1) {
         const div = document.createElement('div');
