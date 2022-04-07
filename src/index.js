@@ -65,6 +65,11 @@ function placement(event, div, obj) {
       activeShip = active.substring(0, active.length - 2)
     }
   }
+  // removes error window if bad ship placement
+  const errorWindow = document.querySelector('.message-window');
+  if (errorWindow) {
+    errorWindow.remove();
+  }
 
   // checks if mouse moved. If not, then rotate ship
   let movedMouse = false;
@@ -72,7 +77,6 @@ function placement(event, div, obj) {
   let shiftX = event.clientX - div.getBoundingClientRect().left;
   let shiftY = event.clientY - div.getBoundingClientRect().top;
   document.body.append(div);
-  if (!document.querySelector('.start-cont')) checkDock();
   moveAt(event.pageX, event.pageY, div);
   // moves the div at (pageX, pageY) coordinates
   // taking initial shifts into account
@@ -143,6 +147,8 @@ function placement(event, div, obj) {
         }
       }
     }
+    // loads 2p or vs CPU option if all ships dragged out
+    if (!document.querySelector('.start-cont')) checkDock();
 
     rmHighlight();
     document.removeEventListener('mousemove', onMouseMove);
@@ -171,7 +177,6 @@ function checkDock() {
   let rightDock = document.querySelector('.ship-storage-right')
   if (leftDock.childNodes.length === 0 && rightDock.childNodes.length === 0) {
     const container = document.querySelector('.side.storage-container');
-    console.log(container.childNodes)
     for (let i = 0; i < container.childNodes.length; i += 1) {
       container.childNodes[i].style.display = 'none';
     }
@@ -183,19 +188,36 @@ function createStart(div) {
   const startCont = document.createElement('div');
   startCont.classList.add('start-cont');
   const pvp = document.createElement('button');
+  pvp.classList.add('start-button');
   pvp.textContent = '2 Players';
-  pvp.addEventListener('click', () => {
-    shipInsert(ships.p1);
-    removeShips();
-  });
+  pvp.addEventListener('click', startBtnLogic);
   const pve = document.createElement('button');
+  pve.classList.add('start-button');
   pve.textContent = 'Player vs CPU';
-  pve.addEventListener('click', () => {
-    shipInsert(ships.p1);
-    removeShips();
-  });
+  pve.addEventListener('click', startBtnLogic);
   startCont.append(pvp, pve);
   div.appendChild(startCont);
+}
+
+function startBtnLogic() {
+  shipInsert(ships.p1);
+  removeShips();
+  errorMessage(validationMsg(ships.p1));
+  const errorWindow = document.querySelector('.message-window')
+  if (!errorWindow) {
+    const startCont = document.querySelector('.start-cont');
+    startCont.remove();
+  }
+}
+
+function validationMsg(ship) {
+  let message = [];
+  for (let key in ship) {
+    if (ship[key].length !== ship[key].position.length) {
+      message.push(`${key} placement`);
+    }
+  }
+  return message;
 }
 
 // snaps dragged ships into ocean
@@ -216,7 +238,6 @@ function shipInsert(obj) {
 
 function removeShips() {
   for (let key in ships.p1) {
-    console.log(ships.p1[key]);
     const markedDiv = document.querySelector(`.${key}-sailed`);
     if (markedDiv) {
       let drag = document.querySelector(`.${key}`);
@@ -547,8 +568,6 @@ function markerPos() {
 
 function insertMarker(pos, peg){
   const position = document.querySelector(pos);
-  console.log(position);
-  console.log(position.childNodes.length)
   if (position && position.childNodes.length < 2) {
     const div = document.createElement('div');
     div.classList.add('inserted');
@@ -570,5 +589,26 @@ function insertMarker(pos, peg){
       }
       position.removeChild(div);
     }, {once : true});
+  }
+}
+
+function errorMessage(/* array */ msg) {
+  if (msg.length === 0) {
+  } else {
+    const window = document.createElement('div');
+    window.classList.add('message-window');
+    const title = document.createElement('div');
+    title.textContent = 'Error Log';
+    window.appendChild(title);
+    const msgCont = document.createElement('div');
+    window.appendChild(msgCont)
+    for (let i = 0; i < msg.length; i += 1) {
+      let line = document.createElement('div');
+      line.textContent = msg[i];
+      line.classList.add('message')
+      msgCont.appendChild(line);
+    }
+    const half = document.querySelector('.half');
+    half.appendChild(window);
   }
 }
