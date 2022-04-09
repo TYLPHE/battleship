@@ -2,10 +2,13 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
-  mode: 'production',
+  mode: 'development',
   entry: {
     index: './src/index.js',
-    pageLayout: './src/pageLayout.js',
+    // pageLayout: './src/pageLayout.js',
+    // highlighter: './src/DOM/highlightSides.js',
+    // clickDrag: './src/ship/clickDrag.js',
+    // addShip: './src/DOM/addShip.js',
   },
   plugins: [
     new HtmlWebpackPlugin({
