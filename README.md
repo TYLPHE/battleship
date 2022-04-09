@@ -39,10 +39,10 @@ Up until now, I've always set my webpack.config.js mode to `mode: 'production'`.
 
 Leaving it at `mode: 'production'`, however is a nightmare for debugging. for example, the console ends up looking like this:
 
-[image here](image link)
+![](https://github.com/TYLPHE/battleship/blob/main/readmeAssets/mode%20-%201.jpg)
 
 when I changed the mode to `mode: 'development'`, it displays things in a way that makes sense! See below:
 
-[image here](image link)
+![](https://github.com/TYLPHE/battleship/blob/main/readmeAssets/mode%20-%202.jpg)
 
 That's some cool webpack stuff! I also learned that I dont need to export everything so the dist folder only has 2 files. I wonder if that makes things secure. I'll look into that later!
