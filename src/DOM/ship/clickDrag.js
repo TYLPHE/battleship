@@ -1,9 +1,9 @@
 import findPos  from "../../data/findPos";
 import verifyPos from "../../data/verifyPos";
-import checkDock from "../board/starter/checkDock";
+import checkDock from "../starter/checkDock";
 import shipHighlight from "./shipHighlight";
-import addHighlight from "../board/highlighting/addHighlight";
-import rmHighlight from "../board/highlighting/rmHighlight";
+import addHighlight from "../highlighting/addHighlight";
+import rmHighlight from "../highlighting/rmHighlight";
 
 function clickDrag(event, div, obj) {
   // bugfix for if mouse is faster than the dragging div

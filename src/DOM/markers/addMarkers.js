@@ -1,4 +1,4 @@
-import rmHighlight from "..//highlighting/rmHighlight";
+import rmHighlight from "../highlighting/rmHighlight";
 import addHighlight from "../highlighting/addHighlight";
 
 function addMarkers(white, red) {

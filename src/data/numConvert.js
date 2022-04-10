@@ -1,5 +1,8 @@
-// convert number text to number
-function numConvert(str) {
+// inputing a string will return a number value.
+// inputing a number as a string will return the number equivalent
+// this is to pinpoint specific squares on the board 
+
+function numConvert(/* string or number */str) {
   const numPairs = {
     'one': 1,
     'two': 2,

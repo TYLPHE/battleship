@@ -1,5 +1,8 @@
-// alphabetical values
-function alphaConvert(letter) {
+// inputing a letter will return a number value.
+// inputing a number will return the letter equivalent
+// this is to pinpoint specific squares on the board 
+
+function alphaConvert(/* string or number */letter) {
   const alpha = [
     ['a', 1], 
     ['b', 2],
@@ -22,4 +25,4 @@ function alphaConvert(letter) {
   }
 }
 
-export default alphaConvert
+export default alphaConvert;

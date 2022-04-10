@@ -1,6 +1,6 @@
 // import shipInsert from './shipinsert';
-import validationMsg from '../../../data/validationMsg';
-import errorMessage from '../../ship/errorMessage';
+import validationMsg from '../../data/validationMsg';
+import errorMessage from '../ship/errorMessage';
 
 function startBtnLogic(obj) {
   shipInsert(obj);
