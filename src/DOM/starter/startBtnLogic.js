@@ -1,8 +1,8 @@
-// import shipInsert from './shipinsert';
+import cpu from '../../cpu/01.cpu';
 import validationMsg from '../../data/validationMsg';
 import errorMessage from '../ship/errorMessage';
 
-function startBtnLogic(obj) {
+function startBtnLogic(obj, mode) {
   shipInsert(obj);
   removeShips(obj);
   errorMessage(validationMsg(obj));
@@ -10,7 +10,10 @@ function startBtnLogic(obj) {
   if (!errorWindow) {
     const startCont = document.querySelector('.start-cont');
     startCont.remove();
-    console.table(obj)
+    if (mode === 'cpu') {
+      cpu();
+      return true;
+    }
   }
 }
 

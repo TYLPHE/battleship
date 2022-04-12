@@ -206,7 +206,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \****************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _startBtnLogic__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./startBtnLogic */ \"./src/DOM/starter/startBtnLogic.js\");\n\n\nfunction createStart(div, obj) {\n  console.log(obj)\n  const startCont = document.createElement('div');\n  startCont.classList.add('start-cont');\n  const pvp = document.createElement('button');\n  pvp.classList.add('start-button');\n  pvp.textContent = '2 Players';\n  pvp.addEventListener('click', () =>  (0,_startBtnLogic__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(obj));\n  const pve = document.createElement('button');\n  pve.classList.add('start-button');\n  pve.textContent = 'Player vs CPU';\n  pve.addEventListener('click', () =>  (0,_startBtnLogic__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(obj));\n  startCont.append(pvp, pve);\n  div.appendChild(startCont);\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createStart);\n\n\n//# sourceURL=webpack://battleship/./src/DOM/starter/createStart.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _startBtnLogic__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./startBtnLogic */ \"./src/DOM/starter/startBtnLogic.js\");\n\n\nfunction createStart(div, obj) {\n  console.log(obj)\n  const startCont = document.createElement('div');\n  startCont.classList.add('start-cont');\n  const pvp = document.createElement('button');\n  pvp.classList.add('start-button');\n  pvp.textContent = '2 Players';\n  pvp.addEventListener('click', () =>  (0,_startBtnLogic__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(obj));\n  const pve = document.createElement('button');\n  pve.classList.add('start-button');\n  pve.textContent = 'Player vs CPU';\n  pve.addEventListener('click', () =>  (0,_startBtnLogic__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(obj, 'cpu'));\n  startCont.append(pvp, pve);\n  div.appendChild(startCont);\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (createStart);\n\n\n//# sourceURL=webpack://battleship/./src/DOM/starter/createStart.js?");
 
 /***/ }),
 
@@ -216,7 +216,77 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \******************************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _data_validationMsg__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../data/validationMsg */ \"./src/data/validationMsg.js\");\n/* harmony import */ var _ship_errorMessage__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../ship/errorMessage */ \"./src/DOM/ship/errorMessage.js\");\n// import shipInsert from './shipinsert';\n\n\n\nfunction startBtnLogic(obj) {\n  shipInsert(obj);\n  removeShips(obj);\n  (0,_ship_errorMessage__WEBPACK_IMPORTED_MODULE_1__[\"default\"])((0,_data_validationMsg__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(obj));\n  const errorWindow = document.querySelector('.message-window');\n  if (!errorWindow) {\n    const startCont = document.querySelector('.start-cont');\n    startCont.remove();\n    console.table(obj)\n  }\n}\n\n// snaps dragged ships into ocean\nfunction shipInsert(obj) {\n  for (const key in obj) {\n    if (obj[key].position.length) {\n      for (let i = 0; i < obj[key].position.length; i += 1) {\n        const div = document.createElement('div');\n        div.classList.add('on-water', `${key}-sailed`);\n        const ocean = document.querySelector(`.ocean.${obj[key].position[i]}`);\n        if (ocean.childNodes.length === 0) {\n          ocean.appendChild(div);\n        }\n      }\n    }\n  }\n}\n\nfunction removeShips(obj) {\n  for (let key in obj) {\n    const markedDiv = document.querySelector(`.${key}-sailed`);\n    if (markedDiv) {\n      let drag = document.querySelector(`.${key}`);\n      if (drag) {\n        drag.remove();\n      }\n    }\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (startBtnLogic);\n\n\n//# sourceURL=webpack://battleship/./src/DOM/starter/startBtnLogic.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _cpu_01_cpu__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../cpu/01.cpu */ \"./src/cpu/01.cpu.js\");\n/* harmony import */ var _data_validationMsg__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../../data/validationMsg */ \"./src/data/validationMsg.js\");\n/* harmony import */ var _ship_errorMessage__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../ship/errorMessage */ \"./src/DOM/ship/errorMessage.js\");\n\n\n\n\nfunction startBtnLogic(obj, mode) {\n  shipInsert(obj);\n  removeShips(obj);\n  (0,_ship_errorMessage__WEBPACK_IMPORTED_MODULE_2__[\"default\"])((0,_data_validationMsg__WEBPACK_IMPORTED_MODULE_1__[\"default\"])(obj));\n  const errorWindow = document.querySelector('.message-window');\n  if (!errorWindow) {\n    const startCont = document.querySelector('.start-cont');\n    startCont.remove();\n    if (mode === 'cpu') {\n      (0,_cpu_01_cpu__WEBPACK_IMPORTED_MODULE_0__[\"default\"])();\n      return true;\n    }\n  }\n}\n\n// snaps dragged ships into ocean\nfunction shipInsert(obj) {\n  for (const key in obj) {\n    if (obj[key].position.length) {\n      for (let i = 0; i < obj[key].position.length; i += 1) {\n        const div = document.createElement('div');\n        div.classList.add('on-water', `${key}-sailed`);\n        const ocean = document.querySelector(`.ocean.${obj[key].position[i]}`);\n        if (ocean.childNodes.length === 0) {\n          ocean.appendChild(div);\n        }\n      }\n    }\n  }\n}\n\nfunction removeShips(obj) {\n  for (let key in obj) {\n    const markedDiv = document.querySelector(`.${key}-sailed`);\n    if (markedDiv) {\n      let drag = document.querySelector(`.${key}`);\n      if (drag) {\n        drag.remove();\n      }\n    }\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (startBtnLogic);\n\n\n//# sourceURL=webpack://battleship/./src/DOM/starter/startBtnLogic.js?");
+
+/***/ }),
+
+/***/ "./src/cpu/01.cpu.js":
+/*!***************************!*\
+  !*** ./src/cpu/01.cpu.js ***!
+  \***************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _02_cpuPlacement__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./02.cpuPlacement */ \"./src/cpu/02.cpuPlacement.js\");\n/* harmony import */ var _data_constructor__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../data/constructor */ \"./src/data/constructor.js\");\n\n\n\nfunction cpu(ships) {\n  (0,_02_cpuPlacement__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(ships);\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cpu(_data_constructor__WEBPACK_IMPORTED_MODULE_1__[\"default\"]));\n\n\n//# sourceURL=webpack://battleship/./src/cpu/01.cpu.js?");
+
+/***/ }),
+
+/***/ "./src/cpu/02.cpuPlacement.js":
+/*!************************************!*\
+  !*** ./src/cpu/02.cpuPlacement.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _03_randomDirection__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./03.randomDirection */ \"./src/cpu/03.randomDirection.js\");\n/* harmony import */ var _03_randomSquare__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./03.randomSquare */ \"./src/cpu/03.randomSquare.js\");\n/* harmony import */ var _03_doesItFit__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./03.doesItFit */ \"./src/cpu/03.doesItFit.js\");\n/* harmony import */ var _03_doesItOverlap__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./03.doesItOverlap */ \"./src/cpu/03.doesItOverlap.js\");\n/* harmony import */ var _03_addCpuPos__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./03.addCpuPos */ \"./src/cpu/03.addCpuPos.js\");\n\n\n\n\n\n\nfunction cpuShipPlacement(obj) {\n  for (let key in obj.p1) {\n    const square = (0,_03_randomSquare__WEBPACK_IMPORTED_MODULE_1__[\"default\"])();\n    const dir = (0,_03_randomDirection__WEBPACK_IMPORTED_MODULE_0__[\"default\"])();\n\n    obj.p1[key].position.push(square);\n    const fit = (0,_03_doesItFit__WEBPACK_IMPORTED_MODULE_2__[\"default\"])(square, dir);\n    const clearance = (0,_03_doesItOverlap__WEBPACK_IMPORTED_MODULE_3__[\"default\"])(square, dir);\n    if (fit && clearance) {\n      (0,_03_addCpuPos__WEBPACK_IMPORTED_MODULE_4__[\"default\"])(square, dir);\n    }\n    // push direction to object\n    // \n    // console.log(obj.p1[key]);\n  }\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (cpuShipPlacement);\n\n\n//# sourceURL=webpack://battleship/./src/cpu/02.cpuPlacement.js?");
+
+/***/ }),
+
+/***/ "./src/cpu/03.addCpuPos.js":
+/*!*********************************!*\
+  !*** ./src/cpu/03.addCpuPos.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n// positions validated, so push to object\n\nfunction addCpuPos() {\n\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (addCpuPos);\n\n\n//# sourceURL=webpack://battleship/./src/cpu/03.addCpuPos.js?");
+
+/***/ }),
+
+/***/ "./src/cpu/03.doesItFit.js":
+/*!*********************************!*\
+  !*** ./src/cpu/03.doesItFit.js ***!
+  \*********************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n// checks if the ship with random square and random direction\n// fits on the board. If yes, return true.\n\nfunction doesItFit() {\n\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (doesItFit);\n\n\n//# sourceURL=webpack://battleship/./src/cpu/03.doesItFit.js?");
+
+/***/ }),
+
+/***/ "./src/cpu/03.doesItOverlap.js":
+/*!*************************************!*\
+  !*** ./src/cpu/03.doesItOverlap.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n// check positions of object and see if there's a matching position\n// if matching, return false\n\nfunction doesItOverlap() {\n\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (doesItOverlap);\n\n\n//# sourceURL=webpack://battleship/./src/cpu/03.doesItOverlap.js?");
+
+/***/ }),
+
+/***/ "./src/cpu/03.randomDirection.js":
+/*!***************************************!*\
+  !*** ./src/cpu/03.randomDirection.js ***!
+  \***************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n// choose a random direction for the ship to be placed.\n// this function occurs after a random square is defined\n\nfunction randomDirection() {\n  const ref = ['up', 'down', 'left', 'right'];\n  const direction = Number.parseInt(Math.random() * 4 + 1);\n  return ref[direction];\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (randomDirection);\n\n\n//# sourceURL=webpack://battleship/./src/cpu/03.randomDirection.js?");
+
+/***/ }),
+
+/***/ "./src/cpu/03.randomSquare.js":
+/*!************************************!*\
+  !*** ./src/cpu/03.randomSquare.js ***!
+  \************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n/* harmony import */ var _data_alphaConvert__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../data/alphaConvert */ \"./src/data/alphaConvert.js\");\n/* harmony import */ var _data_numConvert__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../data/numConvert */ \"./src/data/numConvert.js\");\n\n\n\nfunction randomSquare() {\n  let coordinates = '';\n  const random1 = Number.parseInt(Math.random() * 10 + 1);\n  const random2 = Number.parseInt(Math.random() * 10 + 1)\n  coordinates += (0,_data_alphaConvert__WEBPACK_IMPORTED_MODULE_0__[\"default\"])(random1);\n  coordinates += (0,_data_numConvert__WEBPACK_IMPORTED_MODULE_1__[\"default\"])(random2)\n  return coordinates;\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (randomSquare);\n\n\n//# sourceURL=webpack://battleship/./src/cpu/03.randomSquare.js?");
 
 /***/ }),
 
@@ -236,7 +306,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \*********************************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n// ship constructor\nfunction ship(length) {\n  return {\n    length: length,\n    hit: 0,\n    sunk: false,\n    orientation: 'v', // 'v' = vertical, 'h' = horizontal for placement\n    position: [],\n  }\n}\n\nconst ships = {\n  p1: {\n    carrier: ship(5),\n    battleship: ship(4),\n    cruiser: ship(3),\n    submarine: ship(3),\n    destroyer: ship(2),\n  },\n  p2:{\n    carrier: ship(5),\n    battleship: ship(4),\n    cruiser: ship(3),\n    submarine: ship(3),\n    destroyer: ship(2),\n  },\n}\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ships);\n\n//# sourceURL=webpack://battleship/./src/data/constructor.js?");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"default\": () => (__WEBPACK_DEFAULT_EXPORT__)\n/* harmony export */ });\n// ship constructor\nfunction ship(length) {\n  return {\n    length: length,\n    hit: 0,\n    sunk: false,\n    orientation: 'v', // 'v' = vertical, 'h' = horizontal for placement\n    position: [],\n  }\n}\n\nconst ships = {\n  p1: {\n    carrier: ship(5),\n    battleship: ship(4),\n    cruiser: ship(3),\n    submarine: ship(3),\n    destroyer: ship(2),\n  },\n  \n  p2: {\n    carrier: ship(5),\n    battleship: ship(4),\n    cruiser: ship(3),\n    submarine: ship(3),\n    destroyer: ship(2),\n  },\n}\n\n/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = (ships);\n\n\n//# sourceURL=webpack://battleship/./src/data/constructor.js?");
 
 /***/ }),
 

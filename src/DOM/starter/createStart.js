@@ -11,7 +11,7 @@ function createStart(div, obj) {
   const pve = document.createElement('button');
   pve.classList.add('start-button');
   pve.textContent = 'Player vs CPU';
-  pve.addEventListener('click', () =>  startBtnLogic(obj));
+  pve.addEventListener('click', () =>  startBtnLogic(obj, 'cpu'));
   startCont.append(pvp, pve);
   div.appendChild(startCont);
 }

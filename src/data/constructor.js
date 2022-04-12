@@ -17,7 +17,8 @@ const ships = {
     submarine: ship(3),
     destroyer: ship(2),
   },
-  p2:{
+  
+  p2: {
     carrier: ship(5),
     battleship: ship(4),
     cruiser: ship(3),
@@ -25,4 +26,5 @@ const ships = {
     destroyer: ship(2),
   },
 }
+
 export default ships;
