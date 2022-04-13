@@ -10,6 +10,8 @@ import constructor from '../data/constructor';
 import randomSquare from '../cpu/03.randomSquare';
 import randomDirection from '../cpu/03.randomDirection';
 import whichShip from '../cpu/03.whichShip';
+import doesItFit from '../cpu/03.doesItFit';
+import doesItOverlap from '../cpu/03.doesItOverlap';
 
 describe('Ship positioning', () => {
   const obj = {
@@ -18,7 +20,7 @@ describe('Ship positioning', () => {
     }
   }
   const ship = 'carrier';
-  describe('findPos()', () => {
+  describe('findPos.js', () => {
     it('Should find coordinates', () => {
       const div = document.createElement('div');
       div.classList.add('ocean');
@@ -31,7 +33,7 @@ describe('Ship positioning', () => {
     });
   })
 
-  describe('savePos()', () => {
+  describe('savePos.js', () => {
     it('Should save coordinates', () => {
       obj['carrier'].position = [];
       const pos = 'aone';
@@ -42,7 +44,7 @@ describe('Ship positioning', () => {
 });
 
 describe('Conversion', () => {
-  describe('alphaConvert()', () => {
+  describe('alphaConvert.js', () => {
     it('Should convert letter \'j\' to 10', () => {
       expect(alphaConvert('j')).toBe(10);
     });
@@ -51,7 +53,7 @@ describe('Conversion', () => {
     });
   })
 
-  describe('numConvert()', () => {
+  describe('numConvert.js', () => {
     it('Should convert \'two\' to 2', () => {
       expect(numConvert('two')).toBe(2);
     });
@@ -62,7 +64,7 @@ describe('Conversion', () => {
 });
 
 describe('Randomizer', () => {
-  describe('randomSquare()', () => {
+  describe('randomSquare.js', () => {
     it('Should return a string', () => {
       expect(typeof randomSquare()).toBe('string');
     });
@@ -104,7 +106,7 @@ describe('Randomizer', () => {
     })
   });
 
-  describe('randomDirection()', () => {
+  describe('randomDirection.js', () => {
     it('Should select a random direction', () => {
       let test;
       const ref = ['up', 'down', 'left', 'right'];
@@ -116,7 +118,7 @@ describe('Randomizer', () => {
           }
         }
         if (test !== 'pass') {
-          test = 'fail';
+          test = `fail: ${dir}`;
           break;
         }
       }
@@ -126,26 +128,64 @@ describe('Randomizer', () => {
 });
 
 describe('CPU', () => {
-  const obj = constructor;
-  describe('cpuShipPlacement()', () => {
-    it('Should place ships on board', () => {
-      let test;
-      cpuShipPlacement(obj);
-      for (let key in obj.p2) {
-        if (obj.p2[key].length === obj.p2[key].position.length) {
-          test = 'pass';
-        } else {
-          return test = 'fail';
-        }
-      }
-      expect(test).toEqual('pass');
-    });
-  });
+  // describe('cpuShipPlacement.js', () => {
+  //   it('Should place ships on board', () => {
+  //     const obj = constructor;
+  //     let test;
+  //     cpuShipPlacement(obj);
+  //     for (let key in obj.p2) {
+  //       if (obj.p2[key].length === obj.p2[key].position.length) {
+  //         test = 'pass';
+  //       } else {
+  //         return test = 'fail';
+  //       }
+  //     }
+  //     expect(test).toEqual('pass');
+  //   });
+  // });
 
-  describe('whichShip()', () => {
+  describe('whichShip.js', () => {
     const obj = constructor;
     it('Should return \'carrier\' with no positioning', () => {
       expect(whichShip(obj)).toEqual('carrier');
     })
   });
+
+  describe('doesItFit.js', () => {
+    const obj = constructor;
+    const dir = ['up', 'down', 'left', 'right'];
+    const key = 'carrier';
+    
+    it('Should return \'false\' for \'up\' and \'left\'', () => {
+      const square = 'aone';
+      let result = ['fail', 'pass', 'fail', 'pass'];
+      let test = [];
+      for (let i = 0; i < dir.length; i += 1) {
+        test.push(doesItFit(square, dir[i], key, obj))
+      }
+      expect(test).toEqual(result)
+    });
+
+    it('Should return \'false\' for \'right\' and \'down\'', () => {
+      const square = 'jten';
+      let result = ['pass', 'fail', 'pass', 'fail'];
+      let test = [];
+      for (let i = 0; i < dir.length; i += 1) {
+        test.push(doesItFit(square, dir[i], key, obj))
+      }
+
+      expect(test).toEqual(result)
+    });
+  });
+  
+  // describe('doesItOverlap.js', () => {
+  //   it('Should return \'false\' due to overlap with another ship', () => {
+  //     const obj = constructor;
+      
+  //     obj.p2.carrier.position.push('aone');
+      
+  //     console.log(obj.p2.carrier.position)
+
+  //   });
+  // });
 });

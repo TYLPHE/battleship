@@ -5,7 +5,6 @@
 function whichShip(obj) {
   for (let key in obj.p2) {
     if (obj.p2[key].length !== obj.p2[key].position.length) {
-      console.log(key);
       return key;
     }
   }

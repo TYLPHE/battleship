@@ -3,7 +3,7 @@
 
 function randomDirection() {
   const ref = ['up', 'down', 'left', 'right'];
-  const direction = Number.parseInt(Math.random() * 4 + 1);
+  const direction = Number.parseInt(Math.random() * 4);
   return ref[direction];
 }
 
