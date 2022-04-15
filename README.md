@@ -47,7 +47,7 @@ when I changed the mode to `mode: 'development'`, it displays things in a way th
 
 That's some cool webpack stuff! I also learned that I dont need to export everything so the dist folder only has 2 files. I wonder if that makes things secure. I'll look into that later!
 
-### Babel - Could not "export default" & "import from" with Jest.
+### Babel - Could not "export default" & "import * from" with Jest.
 Because I learned Webpack before Jest, I learned how to export my code like this:
 ```
 function test() {
@@ -106,4 +106,60 @@ Next, I created a new `.babelrc` file within my project with the following conte
 
 This allowed me to continue to use the ES6 import/export formatting!
 
-### Jest - So cool
+### Jest - Testing saves me so much time!
+This is the first time using test-driven development and I'm in love.
+
+This project requires a CPU. This is the greatest challenge becuase I've been doing a lot of front-end work. creating a bunch of tests before writing the actual code helped a lot. It allowed me to break things down into smaller pieces.
+
+For example, I have a function called `randomSquare()`. It selects a random square. Pretty simple, right? With testing, however, I can call this function 1000 times:
+
+```
+  describe('randomSquare.js', () => {
+    it('Should return a valid coordinate', () => {
+      let numRef = [
+        'a','b','c','d','e',
+        'f','g','h','i','j'
+      ];
+      let alphaRef = [
+        'one','two','three','four','five',
+        'six','seven','eight','nine','ten'
+      ];
+
+      let test;
+      for (let i = 0; i < 1000; i += 1) {
+        let square = randomSquare();
+        let row = square.slice(0, 1);
+        let col = square.substring(0, 1);
+
+        for (let i = 0; i < numRef.length; i += 1) {
+          if (numRef[i] === row) {
+            test = 'pass';
+          }
+        }
+        for (let i = 0; i < alphaRef.length; i += 1) {
+          if (alphaRef[i] === col) {
+            test = 'pass';
+          }
+        }
+
+        if (test !== 'pass') {
+          pass = 'fail';
+          break;
+        }
+      }
+
+      expect(test).toBe('pass');
+    });
+  });
+```
+
+If this randomizer can select a random square 1000 times in a row correctly, then I can move forward with confidence that this portion of my code works. Testing makes debugging so much easier. If something breaks, then I can look at other code becasue I know this is solid.
+
+### Recursion - Placing the CPU's ships on the board
+Because of test-driven development, I was able to create a nice function that uses recursion. For example, the function will continue to call itself as long as there are ships to be placed for the CPU. It will not stop until all 5 ships are placed. 
+
+I was running into an error where the function kept pushing coordinates into the same ship. 
+
+I was able to narrow my issues from 5 functions to 1 function thanks to test-driven coding. I knew most of my functions had solid tests, which meant that the chances of that particular section of code breaking was smaller than other sections.
+
+In the end, I was able to identify the issue in my function that saves the coordinates of a valid space.
