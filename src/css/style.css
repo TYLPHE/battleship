@@ -224,17 +224,17 @@ body{
   text-transform: capitalize;
 }
 .cpu-carrier {
-  background-color: rgb(85, 0, 85);
+  background-color: rgb(66, 0, 66);
 }
 .cpu-battleship {
-  background-color: rgb(99, 0, 99);
+  background-color: rgb(100, 0, 100);
 }
 .cpu-cruiser {
-  background-color: rgb(134, 0, 134);
+  background-color: rgb(138, 0, 138);
 }
 .cpu-submarine {
-  background-color: rgb(180, 0, 180);
+  background-color: rgb(182, 0, 182);
 }
 .cpu-destroyer {
-  background-color: rgb(221, 0, 221);
+  background-color: rgb(233, 0, 233);
 }
