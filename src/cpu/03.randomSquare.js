@@ -1,3 +1,6 @@
+// chooses a random square and returns a string coordinate
+// ex. 'aone' or 'jten'
+
 import alphaConvert from "../data/alphaConvert";
 import numConvert from "../data/numConvert";
 

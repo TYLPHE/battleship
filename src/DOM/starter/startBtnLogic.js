@@ -11,7 +11,7 @@ function startBtnLogic(obj, mode) {
     const startCont = document.querySelector('.start-cont');
     startCont.remove();
     if (mode === 'cpu') {
-      cpu();
+      // cpu already placed ships start the cpu game from here.
       return true;
     }
   }
