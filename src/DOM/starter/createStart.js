@@ -1,7 +1,6 @@
 import startBtnLogic from "./startBtnLogic";
 
 function createStart(div, obj) {
-  console.log(obj)
   const startCont = document.createElement('div');
   startCont.classList.add('start-cont');
   const pvp = document.createElement('button');

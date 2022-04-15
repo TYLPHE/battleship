@@ -46,3 +46,64 @@ when I changed the mode to `mode: 'development'`, it displays things in a way th
 ![](https://github.com/TYLPHE/battleship/blob/main/readmeAssets/mode%20-%202.jpg)
 
 That's some cool webpack stuff! I also learned that I dont need to export everything so the dist folder only has 2 files. I wonder if that makes things secure. I'll look into that later!
+
+### Babel - Could not "export default" & "import from" with Jest.
+Because I learned Webpack before Jest, I learned how to export my code like this:
+```
+function test() {
+  // test
+}
+
+export default test;
+```
+
+To import it to a different file, I use this:
+```
+import test from './test';
+
+function main(){
+  test();
+}
+```
+
+Jest, however seemed like it was using an older way of importing and exporting files. It was not accepting the newer ES6 format. I needed to use:
+```
+function test() {
+  // test
+}
+
+module.exports = test;
+```
+
+and import it like this:
+```
+let test = require('./test');
+
+function main() {
+  test();
+}
+```
+
+After a thorough Google search, I learned about Babel! 
+
+> Babel is a toolchain that is mainly used to convert ECMAScript 2015+ code into a backwards compatible version of JavaScript in current and older browsers or environments.
+
+I learned to install babel into my project by using:
+
+`npm install --save-dev @babel/plugin-transform-modules-commonjs`
+
+Next, I created a new `.babelrc` file within my project with the following content:
+
+```
+{
+  ""env"": {
+    ""test"": {
+      ""plugins"": [""@babel/plugin-transform-modules-commonjs""]
+    }
+  }
+}
+```
+
+This allowed me to continue to use the ES6 import/export formatting!
+
+### Jest - So cool

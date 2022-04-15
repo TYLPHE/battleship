@@ -15,21 +15,21 @@ const ref = {
 function doesItFit(square, dir, key, obj) {
   const row = square.slice(0, 1);
   const col = square.substring(1);
-  let vr = alphaConvert(row)
+  let vr = alphaConvert(row);
   let vc = numConvert(col);
   
   if (dir === 'up') {
     vr = vr - ref[key];
     if (vr > 0 && vr < 11) {
-      let temp = [];
+      let coord = [];
       for (let i = 0; i < vr; i += 1) {
-        temp.push(`${alphaConvert(alphaConvert(row) - i)}${col}`)
+        coord.push(`${alphaConvert(alphaConvert(row) - i)}${col}`);
       }
-      const overlap = doesItOverlap(temp, key);
+      const overlap = doesItOverlap(coord, key);
       if (!overlap) {
         return 'pass';
       } else {
-        return 'fail'
+        return 'fail';
       }
     } else {
       return 'fail';
@@ -38,15 +38,15 @@ function doesItFit(square, dir, key, obj) {
   if (dir === 'down') {
     vr = vr + ref[key];
     if (vr > 0 && vr < 11) {
-      let temp = [];
+      let coord = [];
       for (let i = 0; i < vr; i += 1) {
-        temp.push(`${alphaConvert(alphaConvert(row) + i)}${col}`)
+        coord.push(`${alphaConvert(alphaConvert(row) + i)}${col}`);
       }
-      const overlap = doesItOverlap(temp, key);
+      const overlap = doesItOverlap(coord, key);
       if (!overlap) {
         return 'pass';
       } else {
-        return 'fail'
+        return 'fail';
       }
     } else {
       return 'fail';
@@ -55,15 +55,15 @@ function doesItFit(square, dir, key, obj) {
   if (dir === 'left') {
     vc = vc - ref[key];
     if (vc > 0 && vc < 11) {
-      let temp = [];
+      let coord = [];
       for (let i = 0; i < vc; i += 1) {
-        temp.push(`${row}${numConvert( numConvert(col) - i)}`)
+        coord.push(`${row}${numConvert( numConvert(col) - i)}`);
       }
-      const overlap = doesItOverlap(temp, key);
+      const overlap = doesItOverlap(coord, key);
       if (!overlap) {
         return 'pass';
       } else {
-        return 'fail'
+        return 'fail';
       }
     } else {
       return 'fail';
@@ -72,15 +72,15 @@ function doesItFit(square, dir, key, obj) {
   if (dir === 'right') {
     vc = vc + ref[key];
     if (vc > 0 && vc < 11) {
-      let temp = [];
+      let coord = [];
       for (let i = 0; i < vc; i += 1) {
-        temp.push(`${row}${numConvert( numConvert(col) + i)}`)
+        coord.push(`${row}${numConvert( numConvert(col) + i)}`);
       }
-      const overlap = doesItOverlap(temp);
+      const overlap = doesItOverlap(coord);
       if (!overlap) {
         return 'pass';
       } else {
-        return 'fail'
+        return 'fail';
       }
     } else {
       return 'fail';
@@ -93,7 +93,7 @@ function doesItFit(square, dir, key, obj) {
       for (let key in obj.p2) {
         for (let j = 0; j < obj.p2[key].position.length; j += 1) {
           if (arr[i] === obj.p2[key].position[j]) {
-            overlap = 'true'
+            overlap = 'true';
             return overlap;
           }
         }

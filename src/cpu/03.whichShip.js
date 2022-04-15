@@ -8,6 +8,7 @@ function whichShip(obj) {
       return key;
     }
   }
+  return 'filled';
 }
 
 export default whichShip;
