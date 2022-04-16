@@ -12,6 +12,7 @@ function startBtnLogic(obj, mode) {
     startCont.remove();
     if (mode === 'cpu') {
       // cpu already placed ships start the cpu game from here.
+
       return true;
     }
   }

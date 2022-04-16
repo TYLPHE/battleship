@@ -238,3 +238,58 @@ body{
 .cpu-destroyer {
   background-color: rgb(233, 0, 233);
 }
+.fire-cont {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.fire-button {
+  height: 120px;
+  width: 120px;
+  border-radius: 25%;
+  background-color: rgb(182, 0, 0);
+}
+.fire-txt {
+  color: white;
+  font-weight: bold;
+  font-size: 2rem;
+}
+.battle-cont {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid white;
+  border-radius: 25%;
+}
+.battle-log {
+  height: 120px;
+  width: 120px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+.side.instructions {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: column;
+}
+.log-txt{
+  font-size: 1.5rem;
+  text-transform: uppercase;
+}
+.targeting {
+  background-color: rgb(221, 130, 25);
+  animation: blink 550ms infinite;
+}
+@keyframes blink {
+  from {
+    background-color: rgba(0, 255, 255, 0.80);
+  } 50% {
+    background-color: rgba(0, 255, 255, 0.171);
+  } to {
+    background-color: rgba(0, 255, 255, 0.80);
+  }
+}

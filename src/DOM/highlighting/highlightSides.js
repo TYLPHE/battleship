@@ -1,4 +1,4 @@
-function highlighter() {
+function highlightSides() {
   const targetSquare = document.querySelectorAll('.target.square');
   for (let i = 0; i < targetSquare.length; i += 1) {
     if(targetSquare[i].id) {
@@ -70,4 +70,4 @@ function highlighter() {
   }
 }
 
-export default highlighter;
+export default highlightSides;
