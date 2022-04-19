@@ -10,7 +10,6 @@ function targetHighlight() {
   }
 }
 
-
 function highlightSquare(e) {
   let reserve = e.target.style.backgroundColor;
   e.target.style.backgroundColor = 'rgba(0, 255, 255, 0.80)';

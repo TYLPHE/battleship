@@ -6,21 +6,97 @@ import findPos from '../data/findPos';
 import alphaConvert from '../data/alphaConvert';
 import numConvert from '../data/numConvert';
 import cpuShipPlacement from '../cpu/02.cpuPlacement';
-import constructor from '../data/constructor';
 import randomSquare from '../cpu/03.randomSquare';
 import randomDirection from '../cpu/03.randomDirection';
 import whichShip from '../cpu/03.whichShip';
 import doesItFit from '../cpu/03.doesItFit';
 import addCpuPos from '../cpu/03.addCpuPos';
+import checkWin from '../cpu/02.checkWin';
 
-
-
-describe('Ship positioning', () => {
-  const obj = {
-    carrier: {
-      position: [],
+// obj is constantly resused in this file. 
+// I reset the values before each test
+let obj;
+beforeEach(() => {
+  obj = {
+    p1: {
+      carrier: { 
+        length: 5, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [] 
+      },
+      battleship: { 
+        length: 4, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [] 
+      },
+      cruiser: { 
+        length: 3, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [] 
+      },
+      submarine: { 
+        length: 3, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [] 
+      },
+      destroyer: { 
+        length: 2, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [] 
+      }
+    },
+    p2: {
+      carrier: { 
+        length: 5, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [] 
+      },
+      battleship: { 
+        length: 4, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [] 
+      },
+      cruiser: { 
+        length: 3, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [] 
+      },
+      submarine: { 
+        length: 3, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [] 
+      },
+      destroyer: { 
+        length: 2, 
+        hit: 0, 
+        sunk: false, 
+        orientation: 'v', 
+        position: [],
+      }
     }
   }
+});
+
+// ship positioning tests
+describe('Ship positioning', () => {
   const ship = 'carrier';
   describe('findPos.js', () => {
     it('Should find coordinates', () => {
@@ -30,21 +106,21 @@ describe('Ship positioning', () => {
       div.style.backgroundColor = 'green';
       document.body.appendChild(div);
     
-      findPos(ship, obj)
-      expect(obj[ship].position).toEqual( ['atwo'] );
+      findPos(ship, obj.p2)
+      expect(obj.p2[ship].position).toEqual( ['atwo'] );
     });
   })
 
   describe('savePos.js', () => {
     it('Should save coordinates', () => {
-      obj['carrier'].position = [];
       const pos = 'aone';
-      savePos(ship, pos, obj)
-      expect(obj[ship].position).toEqual( ['aone'] )
+      savePos(ship, pos, obj.p2)
+      expect(obj.p2[ship].position).toEqual( ['aone'] )
     });
   })
 });
 
+// conversion tests
 describe('Conversion', () => {
   describe('alphaConvert.js', () => {
     it('Should convert letter \'j\' to 10', () => {
@@ -65,6 +141,7 @@ describe('Conversion', () => {
   });
 });
 
+// randomizer tests
 describe('Randomizer', () => {
   describe('randomSquare.js', () => {
     it('Should return a string', () => {
@@ -129,44 +206,50 @@ describe('Randomizer', () => {
   });
 });
 
+// cpu related tests
 describe('CPU', () => {
-  beforeEach(() => {
-    jest.clearAllMocks();
-  });
   describe('whichShip.js', () => {
-    const obj = constructor;
     it('Should return \'carrier\' with no positioning', () => {
       expect(whichShip(obj)).toEqual('carrier');
-      obj.p2['carrier'].position = [1,2,3,4,5];
     });
 
     it('Should return \'battleship\' with no positioning', () => {
+      obj.p2['carrier'].position = [1,2,3,4,5];
       expect(whichShip(obj)).toEqual('battleship');
-      obj.p2['battleship'].position = [1,2,3,4];
     });
 
     it('Should return \'cruiser\' with no positioning', () => {
+      obj.p2['carrier'].position = [1,2,3,4,5];
+      obj.p2['battleship'].position = [1,2,3,4];
       expect(whichShip(obj)).toEqual('cruiser');
-      obj.p2['cruiser'].position = [1,2,3];
     });
 
     it('Should return \'submarine\' with no positioning', () => {
+      obj.p2['carrier'].position = [1,2,3,4,5];
+      obj.p2['battleship'].position = [1,2,3,4];
+      obj.p2['cruiser'].position = [1,2,3];
       expect(whichShip(obj)).toEqual('submarine');
-      obj.p2['submarine'].position = [1,2,3];
     });
 
     it('Should return \'destroyer\' with no positioning', () => {
+      obj.p2['carrier'].position = [1,2,3,4,5];
+      obj.p2['battleship'].position = [1,2,3,4];
+      obj.p2['cruiser'].position = [1,2,3];
+      obj.p2['submarine'].position = [1,2,3];
       expect(whichShip(obj)).toEqual('destroyer');
-      obj.p2['destroyer'].position = [1,2];
     });
 
     it('Should return \'filled\'', () => {
+      obj.p2['carrier'].position = [1,2,3,4,5];
+      obj.p2['battleship'].position = [1,2,3,4];
+      obj.p2['cruiser'].position = [1,2,3];
+      obj.p2['submarine'].position = [1,2,3];
+      obj.p2['destroyer'].position = [1,2];
       expect(whichShip(obj)).toEqual('filled');
     });
   });
 
   describe('doesItFit.js', () => {
-    const obj = constructor;
     const dir = ['up', 'down', 'left', 'right'];
     const key = 'carrier';
     
@@ -197,14 +280,6 @@ describe('CPU', () => {
       const square = 'aone';
       const dir = 'right';
       const key = 'carrier';
-      const obj = {
-        p2: {
-          carrier: {
-            position: []
-          },
-        },
-      };
-
       const compare = [ 'aone', 'atwo', 'athree', 'afour', 'afive' ];
       addCpuPos(square, dir, key, obj);
       expect(obj.p2['carrier'].position).toEqual(compare);
@@ -214,14 +289,6 @@ describe('CPU', () => {
       const square = 'hfour';
       const dir = 'up';
       const key = 'carrier';
-      const obj = {
-        p2: {
-          carrier: {
-            position: []
-          },
-        },
-      };
-
       const compare = [ 'hfour', 'gfour', 'ffour', 'efour', 'dfour' ];
       addCpuPos(square, dir, key, obj);
       expect(obj.p2['carrier'].position).toEqual(compare);
@@ -229,84 +296,7 @@ describe('CPU', () => {
   });
   
   describe('cpuShipPlacement.js', () => {
-    const obj = {
-      p1: {
-        carrier: { 
-          length: 5, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [] 
-        },
-        battleship: { 
-          length: 4, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [] 
-        },
-        cruiser: { 
-          length: 3, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [] 
-        },
-        submarine: { 
-          length: 3, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [] 
-        },
-        destroyer: { 
-          length: 2, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [] 
-        }
-      },
-      p2: {
-        carrier: { 
-          length: 5, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [] 
-        },
-        battleship: { 
-          length: 4, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [] 
-        },
-        cruiser: { 
-          length: 3, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [] 
-        },
-        submarine: { 
-          length: 3, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [] 
-        },
-        destroyer: { 
-          length: 2, 
-          hit: 0, 
-          sunk: false, 
-          orientation: 'v', 
-          position: [],
-        }
-      }
-    }
     it('Should place ships on board', () => {
-      // const obj = constructor;
       let test;
       cpuShipPlacement(obj);
       for (let key in obj.p2) {
@@ -318,5 +308,33 @@ describe('CPU', () => {
       }
       expect(test).toEqual('pass');
     });
+  });
+});
+
+// game logic tests
+describe('Game Logic', () => {
+  describe('checkWin.js', () => {
+    it('Should return \'false\' with ships still remaining', () => {
+      obj.p1.carrier.sunk = true;
+      obj.p1.battleship.sunk = true;
+      obj.p1.destroyer.sunk = true;
+
+      const test = checkWin(obj);
+      expect(test).toBe(false);
+    });
+
+    it('Should return \'p1\' as the loser with all ships sunk', () => {
+      obj.p1.carrier.sunk = true;
+      obj.p1.battleship.sunk = true;
+      obj.p1.submarine.sunk = true;
+      obj.p1.cruiser.sunk = true;
+      obj.p1.destroyer.sunk = true;
+
+      const loser = checkWin(obj);
+      expect(loser).toEqual('p1');
+    });
+  });
+
+  describe('checkWin.js', () => {
   });
 });

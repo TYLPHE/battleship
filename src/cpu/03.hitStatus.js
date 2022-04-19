@@ -2,7 +2,7 @@
 // if missed, then send a miss message. player is expected to 
 // manage their own pieces.
 
-function fireMissile(obj) {
+function hitStatus(obj) {
   let shot = document.querySelector('.targeting');
   console.log(obj)
   let status = 'miss!'
@@ -20,4 +20,4 @@ function fireMissile(obj) {
   }
 }
 
-export default fireMissile;
+export default hitStatus;

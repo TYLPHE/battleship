@@ -6,7 +6,7 @@ import ship from './data/constructor'
 import addMarkers from './DOM/markers/addMarkers'
 import cpu from './cpu/01.cpu';
 import sendLog from './cpu/03.sendLog';
-import fireMissile from './cpu/03.fireMissile';
+import hitStatus from './cpu/03.hitStatus';
 
 // cell highlighting to eaily identify row and column
 highlightSides();
@@ -22,8 +22,6 @@ addMarkers(2*(100-17), 17*2);
 
 // CPU places its ships on the board
 cpu(ship);
-
-
 
 // add battle log
 const cont = document.querySelectorAll('.side.instructions');
@@ -51,7 +49,7 @@ fireCont.classList.add('fire-cont')
 const fireBtn = document.createElement('button');
 fireBtn.classList.add('fire-button');
 fireBtn.addEventListener('mousedown', () => {
-  let response = fireMissile(ship);
+  let response = hitStatus(ship);
   sendLog(response);
 });
 const firetxt1 = document.createElement('div');
