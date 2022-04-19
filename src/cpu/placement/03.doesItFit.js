@@ -1,8 +1,8 @@
 // checks if the ship with random square and random direction
 // fits on the board. If yes, return true.
 
-import numConvert from "../data/numConvert";
-import alphaConvert from "../data/alphaConvert";
+import numConvert from "../../data/numConvert";
+import alphaConvert from "../../data/alphaConvert";
 
 const ref = {
   carrier: 5,

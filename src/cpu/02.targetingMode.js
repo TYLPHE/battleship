@@ -1,7 +1,8 @@
+// DOM that adds blinking light to clicked square.
+// player then should click 'FIRE' button to check if they hit
 
 function targetingMode() {
   let c = document.getElementsByClassName('target square');
-  // let response = {};
   for (let i = 0; i < c.length; i += 1) {
     if (c[i].id) {
       c[i].addEventListener('click', (e) => {

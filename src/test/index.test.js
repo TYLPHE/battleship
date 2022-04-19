@@ -5,12 +5,12 @@ import savePos from '../data/savePos';
 import findPos from '../data/findPos';
 import alphaConvert from '../data/alphaConvert';
 import numConvert from '../data/numConvert';
-import cpuShipPlacement from '../cpu/02.cpuPlacement';
+import cpuShipPlacement from '../cpu/placement/02.cpuPlacement';
 import randomSquare from '../cpu/03.randomSquare';
-import randomDirection from '../cpu/03.randomDirection';
-import whichShip from '../cpu/03.whichShip';
-import doesItFit from '../cpu/03.doesItFit';
-import addCpuPos from '../cpu/03.addCpuPos';
+import randomDirection from '../cpu/placement/03.randomDirection';
+import whichShip from '../cpu/placement/03.whichShip';
+import doesItFit from '../cpu/placement/03.doesItFit';
+import addCpuPos from '../cpu/placement/03.addCpuPos';
 import checkWin from '../cpu/02.checkWin';
 
 // obj is constantly resused in this file. 

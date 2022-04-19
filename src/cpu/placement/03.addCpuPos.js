@@ -1,7 +1,6 @@
 // positions validated, so push to object
-
-import alphaConvert from "../data/alphaConvert";
-import numConvert from "../data/numConvert";
+import alphaConvert from "../../data/alphaConvert";
+import numConvert from "../../data/numConvert";
 
 const ref = {
   carrier: 5,

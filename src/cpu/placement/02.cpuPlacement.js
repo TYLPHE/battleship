@@ -1,7 +1,7 @@
 import randomDirection from "./03.randomDirection";
-import randomSquare from "./03.randomSquare";
+import randomSquare from "../03.randomSquare";
 import doesItFit from './03.doesItFit';
-import addCpuPos from './03.addCpuPos';
+import addCpuPos from "./03.addCpuPos";
 import whichShip from './03.whichShip';
 
 function cpuShipPlacement(obj, counter = 0, dir, square) {

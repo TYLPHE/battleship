@@ -1,4 +1,4 @@
-import cpuShipPlacement from "./02.cpuPlacement";
+import cpuShipPlacement from "./placement/02.cpuPlacement";
 import targetingMode from './02.targetingMode';
 
 function cpu(ships) {
