@@ -12,7 +12,7 @@ import hitStatus from './gameLogic/hitStatus'
 highlightSides();
 
 // target highlight
-targetHighlight();
+// targetHighlight();
 
 // add ships to gameboard
 addShip(ship);

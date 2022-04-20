@@ -119,16 +119,16 @@ describe('Ship positioning', () => {
       div.style.backgroundColor = 'green';
       document.body.appendChild(div);
     
-      findPos(ship, obj.p2)
-      expect(obj.p2[ship].position).toEqual( ['atwo'] );
+      findPos(ship, obj);
+      expect(obj.p1[ship].position).toEqual( ['atwo'] );
     });
   })
 
   describe('savePos.js', () => {
     it('Should save coordinates', () => {
       const pos = 'aone';
-      savePos(ship, pos, obj.p2)
-      expect(obj.p2[ship].position).toEqual( ['aone'] )
+      savePos(ship, pos, obj)
+      expect(obj.p1[ship].position).toEqual( ['aone'] )
     });
   })
 });
@@ -141,15 +141,15 @@ describe('Conversion', () => {
     });
     it('Should convert 9 to \'i\'', () => {
       expect(alphaConvert(9)).toBe('i');
-    });
-  })
-
-  describe('numConvert.js', () => {
-    it('Should convert \'two\' to 2', () => {
-      expect(numConvert('two')).toBe(2);
-    });
-    it('Should convert 7 to \'seven\'', () => {
-     expect(numConvert(7)).toBe('seven');
+    })
+    
+    describe('numConvert.js', () => {
+      it('Should convert \'two\' to 2', () => {
+        expect(numConvert('two')).toBe(2);
+      });
+      it('Should convert 7 to \'seven\'', () => {
+        expect(numConvert(7)).toBe('seven');
+      });
    });
   });
 });

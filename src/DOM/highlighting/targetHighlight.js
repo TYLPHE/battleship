@@ -1,4 +1,5 @@
 // highlights the target board. helpful for vs cpu
+// removing for now
 
 function targetHighlight() {
   const c = document.getElementsByClassName(`target square`);

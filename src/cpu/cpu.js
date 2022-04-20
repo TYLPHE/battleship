@@ -7,7 +7,7 @@ function cpu(ships) {
   cpuShipPlacement(ships);
   targetingMode(ships);
   battleLog();
-  fireBtn();
+  fireBtn(ships);
   
   // display cpu position on board
   for (let key in ships.p2) {
