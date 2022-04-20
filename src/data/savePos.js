@@ -1,5 +1,5 @@
 function savePos(ship, pos, obj) {
-  const position = obj[ship].position;
+  const position = obj.p1[ship].position;
   position.push(pos);
 }
 

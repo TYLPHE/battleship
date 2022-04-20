@@ -6,6 +6,7 @@ function ship(length) {
     sunk: false,
     orientation: 'v', // 'v' = vertical, 'h' = horizontal for placement
     position: [],
+    hits: [],
   }
 }
 

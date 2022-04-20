@@ -1,17 +1,20 @@
 /**
  * @jest-environment jsdom
  */
+
 import savePos from '../data/savePos';
 import findPos from '../data/findPos';
 import alphaConvert from '../data/alphaConvert';
 import numConvert from '../data/numConvert';
-import cpuShipPlacement from '../cpu/placement/02.cpuPlacement';
-import randomSquare from '../cpu/03.randomSquare';
-import randomDirection from '../cpu/placement/03.randomDirection';
-import whichShip from '../cpu/placement/03.whichShip';
-import doesItFit from '../cpu/placement/03.doesItFit';
-import addCpuPos from '../cpu/placement/03.addCpuPos';
-import checkWin from '../cpu/02.checkWin';
+import cpuShipPlacement from '../cpu/placement/cpuPlacement';
+import randomSquare from '../gameLogic/randomSquare';
+import randomDirection from '../cpu/placement/randomDirection';
+import whichShip from '../cpu/placement/whichShip';
+import doesItFit from '../cpu/placement/doesItFit';
+import addCpuPos from '../cpu/placement/addCpuPos';
+import checkWin from '../gameLogic/checkWin';
+import hitStatus from '../gameLogic/hitStatus';
+import registerHit from '../gameLogic/registerHit';
 
 // obj is constantly resused in this file. 
 // I reset the values before each test
@@ -24,35 +27,40 @@ beforeEach(() => {
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [] 
+        position: [],
+        hits: [],
       },
       battleship: { 
         length: 4, 
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [] 
+        position: [],
+        hits: [],
       },
       cruiser: { 
         length: 3, 
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [] 
+        position: [],
+        hits: [],
       },
       submarine: { 
         length: 3, 
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [] 
+        position: [],
+        hits: [],
       },
       destroyer: { 
         length: 2, 
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [] 
+        position: [],
+        hits: [],
       }
     },
     p2: {
@@ -61,28 +69,32 @@ beforeEach(() => {
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [] 
+        position: [],
+        hits: [],
       },
       battleship: { 
         length: 4, 
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [] 
+        position: [],
+        hits: [],
       },
       cruiser: { 
         length: 3, 
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [] 
+        position: [],
+        hits: [],
       },
       submarine: { 
         length: 3, 
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [] 
+        position: [],
+        hits: [],
       },
       destroyer: { 
         length: 2, 
@@ -90,6 +102,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
+        hits: [],
       }
     }
   }
@@ -160,9 +173,9 @@ describe('Randomizer', () => {
 
       let test;
       for (let i = 0; i < 1000; i += 1) {
-        let square = randomSquare();
-        let row = square.slice(0, 1);
-        let col = square.substring(0, 1);
+        let shot = randomSquare();
+        let row = shot.slice(0, 1);
+        let col = shot.substring(0, 1);
 
         for (let i = 0; i < numRef.length; i += 1) {
           if (numRef[i] === row) {
@@ -254,21 +267,21 @@ describe('CPU', () => {
     const key = 'carrier';
     
     it('Should return \'false\' for \'up\' and \'left\'', () => {
-      const square = 'aone';
+      const shot = 'aone';
       let result = ['fail', 'pass', 'fail', 'pass'];
       let test = [];
       for (let i = 0; i < dir.length; i += 1) {
-        test.push(doesItFit(square, dir[i], key, obj))
+        test.push(doesItFit(shot, dir[i], key, obj))
       }
       expect(test).toEqual(result)
     });
 
     it('Should return \'false\' for \'right\' and \'down\'', () => {
-      const square = 'jten';
+      const shot = 'jten';
       let result = ['pass', 'fail', 'pass', 'fail'];
       let test = [];
       for (let i = 0; i < dir.length; i += 1) {
-        test.push(doesItFit(square, dir[i], key, obj))
+        test.push(doesItFit(shot, dir[i], key, obj))
       }
 
       expect(test).toEqual(result)
@@ -277,20 +290,20 @@ describe('CPU', () => {
 
   describe('addCpuPos.js', () => {
     it('Should push array to ships object - 1', () => {
-      const square = 'aone';
+      const shot = 'aone';
       const dir = 'right';
       const key = 'carrier';
       const compare = [ 'aone', 'atwo', 'athree', 'afour', 'afive' ];
-      addCpuPos(square, dir, key, obj);
+      addCpuPos(shot, dir, key, obj);
       expect(obj.p2['carrier'].position).toEqual(compare);
     });
 
     it('Should push array to ships object - 2', () => {
-      const square = 'hfour';
+      const shot = 'hfour';
       const dir = 'up';
       const key = 'carrier';
       const compare = [ 'hfour', 'gfour', 'ffour', 'efour', 'dfour' ];
-      addCpuPos(square, dir, key, obj);
+      addCpuPos(shot, dir, key, obj);
       expect(obj.p2['carrier'].position).toEqual(compare);
     });
   });
@@ -335,6 +348,60 @@ describe('Game Logic', () => {
     });
   });
 
-  describe('checkWin.js', () => {
+  describe('hitStatus.js', () => {
+    it('Should return object keys: \'shot\', \'status\', and \'ship\'', () => {
+      obj.p2.destroyer.position = ['aone', 'atwo']
+      let shot = document.createElement('div');
+      shot.classList.add('targeting');
+      shot.id = 'aone';
+      document.body.appendChild(shot);
+      let test = hitStatus(obj, 'player');
+      expect(test).toEqual({
+        shot: 'aone',
+        status: 'hit!' ,
+        ship: 'destroyer',
+      });
+    });
+
+    it('Should return a object with misses', () => {
+      obj.p2.destroyer.position = ['aone', 'atwo']
+      let shot = document.createElement('div');
+      shot.classList.add('targeting');
+      shot.id = 'athree';
+      document.body.appendChild(shot);
+      let test = hitStatus(obj, 'player');
+      expect(test).toEqual({
+        shot: 'athree',
+        status: 'miss!',
+        ship: 'miss!',
+      });
+    });
+
+    it('Should return a hit from CPU to player', () => {
+      obj.p1.destroyer.position = ['aone', 'atwo']
+      let shot = 'aone';
+      let test = hitStatus(obj, 'cpu', shot);
+      expect(test).toEqual({
+        shot: shot,
+        status: 'hit!',
+        ship: 'destroyer',
+      });
+    });
+
+
+  });
+  describe('registerHit.js', () => {
+    it('Should push a location to obj.hits', () => {
+      let shot = document.createElement('div');
+      shot.classList.add('targeting');
+      shot.id = 'aone';
+      document.body.appendChild(shot);
+
+      obj.p2.destroyer.position = ['aone', 'atwo']
+
+      let status = hitStatus(obj, 'player');
+      registerHit(obj, status, 'cpu');
+      expect(obj.p2.destroyer.hits).toEqual(['aone']);
+    });
   });
 });

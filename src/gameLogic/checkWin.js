@@ -7,7 +7,8 @@ function checkWin(obj) {
         if (key === 'sunk' && obj[p][ship][key] === true) {
           counter += 1;
           if (counter === 5) {
-            return p;
+            const loser = p;
+            return loser;
           } else {
           }
         }

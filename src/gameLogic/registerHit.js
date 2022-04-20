@@ -1,9 +1,10 @@
 // receive an object from hitStatus.js with ship and hit location
 // then add to ships object
 
-function registerHit(obj, ship, hit) {
+function registerHit(obj, hit, player) {
+  let p = (player === 'player') ? 'p1' : 'p2';
   if (hit.status) {
-    obj[ship].push(hit.show);
+    obj[p][hit.ship].hits.push(hit.shot);
   }
 }
 

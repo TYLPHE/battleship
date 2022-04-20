@@ -1,4 +1,5 @@
 // send selected position with 'hit' or 'miss'
+// for the message window above the fire button
 
 import numConvert from "../data/numConvert";
 

@@ -1,8 +1,8 @@
-import randomDirection from "./03.randomDirection";
-import randomSquare from "../03.randomSquare";
-import doesItFit from './03.doesItFit';
-import addCpuPos from "./03.addCpuPos";
-import whichShip from './03.whichShip';
+import randomDirection from "./randomDirection";
+import randomSquare from "../../gameLogic/randomSquare";
+import doesItFit from './doesItFit';
+import addCpuPos from "./addCpuPos";
+import whichShip from './whichShip';
 
 function cpuShipPlacement(obj, counter = 0, dir, square) {
   counter += 1;

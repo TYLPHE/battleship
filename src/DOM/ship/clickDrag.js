@@ -9,7 +9,7 @@ function clickDrag(event, div, obj) {
   // bugfix for if mouse is faster than the dragging div
   let activeSquare;
   let activeShip;
-  for (const key in obj) {
+  for (const key in obj.p1) {
     let active = event.target.id;
     if (key === active.substring(0, active.length - 2)) {
       activeSquare = active;
@@ -51,8 +51,8 @@ function clickDrag(event, div, obj) {
       // highlight the sides
       addHighlight(elemBelow, 'ocean');
       // clears previous position of ship
-      obj[activeShip].position = [];
-      for (const key in obj) {
+      obj.p1[activeShip].position = [];
+      for (const key in obj.p1) {
         if (key === activeShip){
           // highlight under the ship
           shipHighlight(activeSquare, elemBelow, obj);
@@ -63,9 +63,9 @@ function clickDrag(event, div, obj) {
       verifyPos(activeShip, obj);
     }
     // maintain orientation while dragging
-    for (const key in obj) {
+    for (const key in obj.p1) {
       if (activeShip === key) {
-        if (obj[activeShip].orientation === 'v') {
+        if (obj.p1[activeShip].orientation === 'v') {
           return div.style.display = 'initial';
         } else {
           return div.style.display = 'flex';
@@ -80,19 +80,19 @@ function clickDrag(event, div, obj) {
   div.onmouseup = function() {
     // rotates ship if it was not dragged
     if (!movedMouse) {
-      obj[activeShip].position = []
+      obj.p1[activeShip].position = []
       findPos(activeShip, obj);
       verifyPos(activeShip, obj);
       const shipClass = event.target.parentNode.classList[0]
       let ship = document.querySelector(`.${shipClass}`);
       ship.classList.toggle('horizontal');
-      for (const key in obj) {
+      for (const key in obj.p1) {
         if (key === shipClass) {
-          if (obj[shipClass].orientation === 'v') {
-            obj[shipClass].orientation = 'h';
+          if (obj.p1[shipClass].orientation === 'v') {
+            obj.p1[shipClass].orientation = 'h';
             div.style.display = 'flex';
           } else {
-            obj[shipClass].orientation = 'v';
+            obj.p1[shipClass].orientation = 'v';
             div.style.display = 'initial';
           }
         }
