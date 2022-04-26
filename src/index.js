@@ -7,6 +7,7 @@ import addMarkers from './DOM/markers/addMarkers'
 import cpu from './cpu/cpu';
 import sendLog from './gameLogic/sendLog';
 import hitStatus from './gameLogic/hitStatus'
+import cpuShipPlacement from './cpu/placement/cpuPlacement';
 
 // cell highlighting to eaily identify row and column
 highlightSides();
@@ -14,7 +15,7 @@ highlightSides();
 // target highlight
 // targetHighlight();
 
-// add ships to gameboard
+// add ship to gameboard
 addShip(ship);
 
 // add markers to board
@@ -27,7 +28,7 @@ addMarkers(2*(100-17), 17*2);
 // }
 // console.log(arrTest)
 
-// CPU places its ships on the board
+// CPU places its ship on the board
 // cpu(ship);
 
 // add battle log
@@ -68,3 +69,14 @@ addMarkers(2*(100-17), 17*2);
 // fireBtn.append(firetxt1, firetxt2);
 // fireCont.appendChild(fireBtn);
 // cont[1].appendChild(fireCont);
+
+// // check placement
+// cpuShipPlacement(ship)
+// for (let key in ship.p2) {
+//   for (let i = 0; i < ship.p2[key].position.length; i += 1) {
+//     let coord = ship.p2[key].position[i];
+//     const square = document.querySelector(`.${coord}`);
+//     square.classList.add(`cpu-${key}`);
+//     console.log(square);
+//   }
+// }

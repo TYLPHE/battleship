@@ -19,6 +19,8 @@ import cpuMode from '../cpu/cpuMode';
 import huntMode from '../cpu/huntMode';
 import shipSunk from "./shipSunk";
 import cpuShotList from "../data/cpuShotList";
+import endGame from '../gameLogic/endGame';
+
 function cpuLogic(obj, fromPlayer) {
   const pStatus = hitStatus(obj, fromPlayer);
   if (pStatus) {
@@ -44,11 +46,11 @@ function cpuLogic(obj, fromPlayer) {
       cpuMode.push('hunt');
       console.log('hunting...');
       shipSunk(obj, cpuStatus.ship);
-      winStatus = checkWin();
+      winStatus = checkWin(obj);
       console.log('checkwin: ', winStatus)
       if (winStatus) {
         console.log('CPU wins!');
-        endGame();
+        endGame(obj);
       }
     }
   }

@@ -11,6 +11,7 @@ function huntMode(obj) {
   for (let ship in obj.p1) {
     const hitsOnPlayer = obj.p1[ship].hits;
     const shipSunk = obj.p1[ship].sunk;
+    
     // single hit, find random square near the hit
     if (hitsOnPlayer.length === 1 && shipSunk === false) {
       const hitSquare = hitsOnPlayer[0];
@@ -62,22 +63,14 @@ function huntMode(obj) {
       }
     }
   }
+
   for (let i = 0; i < cpuShotList.length; i += 1) {
     if (cpuShotList[i] === square) {
-      square = huntMode(obj, direction)
+      square = huntMode(obj, direction);
     }
   }
   return square;
 }
-
-
-
-
-
-
-
-
-
 
 function rotation(dir, row, col) {
   let checkSquare;
@@ -146,6 +139,10 @@ function dupeRowOrCol(hitsOnPlayer) {
         }
       });
       outputArr.sort();
+      if (outputArr[0] === 10) {
+        outputArr.shift();
+        outputArr.push(10);
+      }
       return {
         arr: outputArr,
         dupe: dupeArr[0]

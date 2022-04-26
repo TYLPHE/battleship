@@ -2,7 +2,7 @@
 function rmHighlight() {
   const sides = document.querySelectorAll('.square');
   for (let i = 0; i < sides.length; i += 1) {
-    sides[i].style.backgroundColor = 'transparent';
+    sides[i].style.backgroundColor = '';
   }
 }
 

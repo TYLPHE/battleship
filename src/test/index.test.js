@@ -349,6 +349,17 @@ describe('Game Logic', () => {
       const loser = checkWin(obj);
       expect(loser).toEqual('p1');
     });
+
+    it('Should return \'p2\' as the loser with all ships sunk', () => {
+      obj.p2.carrier.sunk = true;
+      obj.p2.battleship.sunk = true;
+      obj.p2.submarine.sunk = true;
+      obj.p2.cruiser.sunk = true;
+      obj.p2.destroyer.sunk = true;
+
+      const loser = checkWin(obj);
+      expect(loser).toEqual('p2');
+    });
   });
 
   describe('hitStatus.js', () => {
@@ -481,11 +492,12 @@ describe('Game Logic', () => {
     });
 
     it('Should finish boat sitting in bottom-right corner', () => {
-      obj.p1.carrier.position = ['jten', 'jnine', 'jeight', 'jseven', 'jsix']
+      obj.p1.carrier.position = ['jten', 'jnine', 'jeight', 'jseven', 'jsix'];
       obj.p1.carrier.hits = ['jten', 'jnine', 'jeight', 'jseven'];
       cpuShotList.push('jten', 'jnine', 'jeight', 'jseven')
       let square = huntMode(obj);
       expect(square).toEqual('jsix');
     });
   });
+
 });
