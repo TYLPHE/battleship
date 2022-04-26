@@ -33,6 +33,7 @@ function cpuLogic(obj, fromPlayer) {
     }
     if (cpuMode[0] === 'hunt') {
       square = huntMode(obj);
+      cpuShotList.push(square);
     }
     const cpuStatus = hitStatus(obj, 'cpu', square);
     markBoard(cpuStatus);
@@ -44,6 +45,7 @@ function cpuLogic(obj, fromPlayer) {
       console.log('hunting...');
       shipSunk(obj, cpuStatus.ship);
       winStatus = checkWin();
+      console.log('checkwin: ', winStatus)
       if (winStatus) {
         console.log('CPU wins!');
         endGame();

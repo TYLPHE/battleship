@@ -14,10 +14,8 @@ function randomSquare(mode = null) {
   if (mode === 'shot') {
     if (cpuShotList.length > 99) throw console.error('No more squares');
     let match = cpuShotList.filter((square) => square === coordinates);
-    console.log('matches: ', match)
     if (match.length === 0) {
       cpuShotList.push(coordinates);
-      console.log(cpuShotList);
       return coordinates;
     } else {
       return coordinates = randomSquare(mode)

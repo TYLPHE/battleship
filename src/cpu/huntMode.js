@@ -6,34 +6,23 @@ import alphaConvert from "../data/alphaConvert";
 import cpuMode from '../cpu/cpuMode';
 
 function huntMode(obj) {
+  let square;
+  let direction  = randomDirection();
   for (let ship in obj.p1) {
     const hitsOnPlayer = obj.p1[ship].hits;
     const shipSunk = obj.p1[ship].sunk;
-
     // single hit, find random square near the hit
     if (hitsOnPlayer.length === 1 && shipSunk === false) {
       const hitSquare = hitsOnPlayer[0];
-      const direction = randomDirection();
       const row = hitSquare.slice(0, 1);
       const col = hitSquare.substring(1);
-      let square = rotation(direction, row, col);
-      for (let i = 0; i < cpuShotList.length; i += 1) {
-        if (cpuShotList[i] === square) {
-          square = huntMode(obj);
-          cpuShotList.push(square);
-          return square;
-        }
-      }
-      cpuShotList.push(square);
-      return square;
+      square = rotation(direction, row, col);
     }
     
     // double hit, aim in a line both ends for a hit
     if (hitsOnPlayer.length > 1 && shipSunk === false) {
       const rowCol = dupeRowOrCol(hitsOnPlayer);
-
       // columns are spelled out while rows are a single letter
-      let direction = randomDirection();
       if (rowCol.dupe.length > 1) {
         if (direction === 'left') {
           direction = 'up';
@@ -49,8 +38,8 @@ function huntMode(obj) {
           direction = 'right';
         }
       }
+
       let end;
-      let square;
       if (direction === 'up') {
         end = alphaConvert(rowCol.arr[0] - 1);
         if (!end) end = alphaConvert(rowCol.arr[rowCol.arr.length - 1] + 1);
@@ -71,46 +60,49 @@ function huntMode(obj) {
         if (!end) end = numConvert(rowCol.arr[0] - 1);
         square = `${rowCol.dupe}${end}`;
       }
-      // check for matches
-      for (let i = 0; i < cpuShotList.length; i += 1) {
-        if (cpuShotList[i] === square) {
-          square = huntMode(obj);
-          cpuShotList.push(square);
-          return square;
-        }
-      }
-      cpuShotList.push(square);
-      return square;
     }
-    
-    // if ship sunk, change cpu mode from 'hunt' to 'search'
   }
+  for (let i = 0; i < cpuShotList.length; i += 1) {
+    if (cpuShotList[i] === square) {
+      square = huntMode(obj, direction)
+    }
+  }
+  return square;
 }
+
+
+
+
+
+
+
+
+
 
 function rotation(dir, row, col) {
   let checkSquare;
   if (dir === 'up') {
-    let up = alphaConvert(row) - 1;
+    let up = alphaConvert(alphaConvert(row) - 1);
     if (up) {
-      checkSquare = `${alphaConvert(up)}${col}`;
+      checkSquare = `${up}${col}`;
     }
   }
   if (dir === 'down') {
-    let down = alphaConvert(row) + 1;
+    let down = alphaConvert(alphaConvert(row) + 1);
     if (down) {
-      checkSquare = `${alphaConvert(down)}${col}`;
+      checkSquare = `${down}${col}`;
     }
   }
   if (dir === 'left') {
-    let left = numConvert(col) - 1;
+    let left = numConvert(numConvert(col) - 1);
     if (left) {
-      checkSquare = `${row}${numConvert(left)}`;
+      checkSquare = `${row}${left}`;
     }
   }
   if (dir === 'right') {
-    let right = numConvert(col) + 1;
+    let right = numConvert(numConvert(col) + 1);
     if (right) {
-      checkSquare = `${row}${numConvert(right)}`;
+      checkSquare = `${row}${right}`;
     }
   }
 
@@ -154,7 +146,6 @@ function dupeRowOrCol(hitsOnPlayer) {
         }
       });
       outputArr.sort();
-
       return {
         arr: outputArr,
         dupe: dupeArr[0]

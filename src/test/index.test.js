@@ -478,6 +478,14 @@ describe('Game Logic', () => {
       cpuShotList.push('bsix');
       let square = huntMode(obj);
       expect(square).toEqual('bone');
-    });   
+    });
+
+    it('Should finish boat sitting in bottom-right corner', () => {
+      obj.p1.carrier.position = ['jten', 'jnine', 'jeight', 'jseven', 'jsix']
+      obj.p1.carrier.hits = ['jten', 'jnine', 'jeight', 'jseven'];
+      cpuShotList.push('jten', 'jnine', 'jeight', 'jseven')
+      let square = huntMode(obj);
+      expect(square).toEqual('jsix');
+    });
   });
 });

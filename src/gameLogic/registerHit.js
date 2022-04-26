@@ -7,7 +7,6 @@ function registerHit(obj, hit, onPlayer) {
     const hits = obj[p][hit.ship]['hits'];
     hits.push(hit.shot);
   }
-  console.log(hit.ship, obj['p1'][hit.ship].hits)
 }
 
 export default registerHit;
