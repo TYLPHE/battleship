@@ -10,7 +10,6 @@ function cpuShipPlacement(obj, counter = 0, dir, square) {
   let ship = whichShip(obj);
   
   if (ship === 'filled') {
-    // console.log(obj.p2);
     return;
   }
   for (let key in obj.p2) {
@@ -23,21 +22,17 @@ function cpuShipPlacement(obj, counter = 0, dir, square) {
         dir = randomDirection();
       }
       let fit = doesItFit(square, dir, ship, obj);
-      // console.log('square:', square, '| dir:', dir, '| fit: ', fit);
 
       if (fit !== 'pass') {
-        // choose next direction, then assess positions
         const ref = ['up', 'down', 'left', 'right', 'up'];
         for (let i = 0; i < ref.length; i += 1) {
           if (ref[i] === dir) {
             const newDir = ref[i + 1];
-            // console.log('newDir: ', newDir);
             cpuShipPlacement(obj, counter, newDir, square);
             return;
           }
         }
       } else {
-        // console.log('addCpuPos(): ',square, dir, ship)
         addCpuPos(square, dir, ship, obj);
       }
     }

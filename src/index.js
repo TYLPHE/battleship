@@ -20,6 +20,13 @@ addShip(ship);
 // add markers to board
 addMarkers(2*(100-17), 17*2);
 
+// const test = document.querySelectorAll('.target.square');
+// const arrTest = []
+// for (let i = 0; i < test.length; i += 1) {
+//   if(test[i].id) arrTest.push(test[i].id)
+// }
+// console.log(arrTest)
+
 // CPU places its ships on the board
 // cpu(ship);
 

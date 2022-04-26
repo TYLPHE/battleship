@@ -1,4 +1,5 @@
 // add fire button
+import cpuLogic from '../../cpu/cpuLogic';
 import hitStatus from '../../gameLogic/hitStatus';
 import sendLog from '../../gameLogic/sendLog';
 
@@ -18,10 +19,11 @@ function fireBtn(obj) {
   fireBtn.append(firetxt1, firetxt2);
   fireCont.appendChild(fireBtn);
   cont[1].appendChild(fireCont);
+  
   fireBtn.addEventListener('mousedown', () => {
     let response = hitStatus(obj, 'player');
     sendLog(response);
-    return response;
+    cpuLogic(obj, 'player')
   });
 }
 

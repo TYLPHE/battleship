@@ -2,11 +2,11 @@
 // if missed, then send a miss message. player is expected to 
 // manage their own pieces.
 
-function hitStatus(obj, /* 'cpu' or 'player' */ player, cpuShot) {
+function hitStatus(obj, /* 'cpu' or 'player' */ fromPlayer, cpuShot) {
   let ship = 'miss!';
   let status = 'miss!';
 
-  if (player === 'player') {
+  if (fromPlayer === 'player') {
     let shot = document.querySelector('.targeting');
     if (shot) {
       for (let key in obj.p2) {
@@ -24,20 +24,20 @@ function hitStatus(obj, /* 'cpu' or 'player' */ player, cpuShot) {
         ship: ship,
       }
     }
-    if (player === 'cpu') {
-      for (let key in obj.p1) {
-        for (let i = 0; i < obj.p1[key].position.length; i += 1) {
-          if (cpuShot === obj.p1[key].position[i]) {
-            status = 'hit!';
-            ship = key;
-          }
+  }
+  if (fromPlayer === 'cpu') {
+    for (let key in obj.p1) {
+      for (let i = 0; i < obj.p1[key].position.length; i += 1) {
+        if (cpuShot === obj.p1[key].position[i]) {
+          status = 'hit!';
+          ship = key;
         }
       }
-      return {
-        shot: cpuShot,
-        status: status,
-        ship: ship,
-      }
+    }
+    return {
+      shot: cpuShot,
+      status: status,
+      ship: ship,
     }
   }
 

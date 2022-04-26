@@ -15,6 +15,10 @@ import addCpuPos from '../cpu/placement/addCpuPos';
 import checkWin from '../gameLogic/checkWin';
 import hitStatus from '../gameLogic/hitStatus';
 import registerHit from '../gameLogic/registerHit';
+import cpuLogic from '../cpu/cpuLogic';
+import huntMode from '../cpu/huntMode';
+import cpuShotList from '../data/cpuShotList';
+import cpuMode from '../cpu/cpuMode';
 
 // obj is constantly resused in this file. 
 // I reset the values before each test
@@ -27,8 +31,8 @@ beforeEach(() => {
         hit: 0, 
         sunk: false, 
         orientation: 'v', 
-        position: [],
-        hits: [],
+        position: [ ],
+        hits: [ ],
       },
       battleship: { 
         length: 4, 
@@ -36,7 +40,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
-        hits: [],
+      hits: [ ],
       },
       cruiser: { 
         length: 3, 
@@ -44,7 +48,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
-        hits: [],
+        hits: [ ],
       },
       submarine: { 
         length: 3, 
@@ -52,7 +56,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
-        hits: [],
+        hits: [ ],
       },
       destroyer: { 
         length: 2, 
@@ -60,7 +64,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
-        hits: [],
+        hits: [ ],
       }
     },
     p2: {
@@ -70,7 +74,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
-        hits: [],
+        hits: [ ],
       },
       battleship: { 
         length: 4, 
@@ -78,7 +82,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
-        hits: [],
+        hits: [ ],
       },
       cruiser: { 
         length: 3, 
@@ -86,7 +90,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
-        hits: [],
+        hits: [ ],
       },
       submarine: { 
         length: 3, 
@@ -94,7 +98,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
-        hits: [],
+        hits: [ ],
       },
       destroyer: { 
         length: 2, 
@@ -102,7 +106,7 @@ beforeEach(() => {
         sunk: false, 
         orientation: 'v', 
         position: [],
-        hits: [],
+        hits: [ ],
       }
     }
   }
@@ -141,16 +145,15 @@ describe('Conversion', () => {
     });
     it('Should convert 9 to \'i\'', () => {
       expect(alphaConvert(9)).toBe('i');
-    })
-    
-    describe('numConvert.js', () => {
-      it('Should convert \'two\' to 2', () => {
-        expect(numConvert('two')).toBe(2);
-      });
-      it('Should convert 7 to \'seven\'', () => {
-        expect(numConvert(7)).toBe('seven');
-      });
-   });
+    })    
+  });
+  describe('numConvert.js', () => {
+    it('Should convert \'two\' to 2', () => {
+      expect(numConvert('two')).toBe(2);
+    });
+    it('Should convert 7 to \'seven\'', () => {
+      expect(numConvert(7)).toBe('seven');
+    });
   });
 });
 
@@ -351,7 +354,7 @@ describe('Game Logic', () => {
   describe('hitStatus.js', () => {
     it('Should return object keys: \'shot\', \'status\', and \'ship\'', () => {
       obj.p2.destroyer.position = ['aone', 'atwo']
-      let shot = document.createElement('div');
+      const shot = document.createElement('div');
       shot.classList.add('targeting');
       shot.id = 'aone';
       document.body.appendChild(shot);
@@ -365,11 +368,11 @@ describe('Game Logic', () => {
 
     it('Should return a object with misses', () => {
       obj.p2.destroyer.position = ['aone', 'atwo']
-      let shot = document.createElement('div');
+      const shot = document.createElement('div');
       shot.classList.add('targeting');
       shot.id = 'athree';
       document.body.appendChild(shot);
-      let test = hitStatus(obj, 'player');
+      const test = hitStatus(obj, 'player');
       expect(test).toEqual({
         shot: 'athree',
         status: 'miss!',
@@ -379,8 +382,8 @@ describe('Game Logic', () => {
 
     it('Should return a hit from CPU to player', () => {
       obj.p1.destroyer.position = ['aone', 'atwo']
-      let shot = 'aone';
-      let test = hitStatus(obj, 'cpu', shot);
+      const shot = 'aone';
+      const test = hitStatus(obj, 'cpu', shot);
       expect(test).toEqual({
         shot: shot,
         status: 'hit!',
@@ -392,7 +395,7 @@ describe('Game Logic', () => {
   });
   describe('registerHit.js', () => {
     it('Should push a location to obj.hits', () => {
-      let shot = document.createElement('div');
+      const shot = document.createElement('div');
       shot.classList.add('targeting');
       shot.id = 'aone';
       document.body.appendChild(shot);
@@ -401,7 +404,80 @@ describe('Game Logic', () => {
 
       let status = hitStatus(obj, 'player');
       registerHit(obj, status, 'cpu');
-      expect(obj.p2.destroyer.hits).toEqual(['aone']);
+      expect(obj.p1.destroyer.hits).toEqual(['aone']);
     });
+  });
+
+  describe('cpuLogic.js', () => {
+    it('Should fire randomly at player', () => {
+      cpuMode.pop();
+      cpuMode.push( 'search' );
+
+      const square1 = document.createElement('div');
+      square1.classList.add('target', 'atwo');
+
+      const square2 = document.createElement('div');
+      square2.classList.add('target', 'bone');
+
+      const shot = document.createElement('div');
+      shot.classList.add('targeting');
+      shot.id = 'aone';
+      document.body.appendChild(shot, square1, square2);
+
+      obj.p2.carrier.position = [
+        'aone',
+        'atwo',
+        'athree',
+        'afour',
+        'afive',
+      ];
+      
+      const fromPlayer = 'player';
+      cpuLogic(obj, fromPlayer);
+
+      expect(obj.p1.carrier.hits).toEqual(['aone']);
+    });
+  });
+
+  describe('huntMode.js', () => {
+    it('Should target near the hit ship', () => {
+      obj.p1.carrier.position = ['aone', 'bone', 'cone', 'done', 'eone'];
+      obj.p1.carrier.hits = ['btwo'];
+      let square = huntMode(obj);
+      expect(
+        square === 'atwo'   || 
+        square === 'bthree' || 
+        square === 'bone'   ||
+        square === 'ctwo'
+        ).toBeTruthy();
+    });
+
+    it('Should target along the ship with 2 hits vertically', () => {
+      obj.p1.carrier.position = ['aone', 'bone', 'cone', 'done', 'eone']
+      obj.p1.carrier.hits = ['dtwo', 'ctwo'];
+      let square = huntMode(obj);
+      expect(
+        square === 'btwo'   || 
+        square === 'etwo'
+        ).toBeTruthy();
+    });
+
+    it('Should target along the ship with 2 hits horizontally', () => {
+      obj.p1.carrier.position = ['btwo', 'bthree', 'bfour', 'bfive', 'bsix']
+      obj.p1.carrier.hits = ['bfive', 'bfour'];
+      let square = huntMode(obj);
+      expect(
+        square === 'bthree'   || 
+        square === 'bsix'
+        ).toBeTruthy();
+    });
+
+    it('Should target along the ship with 4 hits horizontally', () => {
+      obj.p1.carrier.position = ['btwo', 'bthree', 'bfour', 'bfive', 'bsix']
+      obj.p1.carrier.hits = ['bfive', 'bfour', 'bthree', 'btwo'];
+      cpuShotList.push('bsix');
+      let square = huntMode(obj);
+      expect(square).toEqual('bone');
+    });   
   });
 });
