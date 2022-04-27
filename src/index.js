@@ -70,7 +70,7 @@ addMarkers(2*(100-17), 17*2);
 // fireCont.appendChild(fireBtn);
 // cont[1].appendChild(fireCont);
 
-// // check placement
+// check placement
 // cpuShipPlacement(ship)
 // for (let key in ship.p2) {
 //   for (let i = 0; i < ship.p2[key].position.length; i += 1) {

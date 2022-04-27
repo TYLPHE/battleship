@@ -22,8 +22,17 @@ function fireBtn(obj) {
   
   fireBtn.addEventListener('mousedown', () => {
     let response = hitStatus(obj, 'player');
-    sendLog(response);
-    cpuLogic(obj, 'player')
+    if (response) {
+      sendLog(response);
+
+      // add indicator to show where to place marker
+      // 'dotted' is removed in addMarkers.js
+      let markSquare = document.querySelector(`#${response.shot}`);
+      markSquare.classList.add('dotted');
+    }
+
+    cpuLogic(obj);
+
   });
 }
 

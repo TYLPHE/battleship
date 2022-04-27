@@ -19,6 +19,7 @@ import cpuLogic from '../cpu/cpuLogic';
 import huntMode from '../cpu/huntMode';
 import cpuShotList from '../data/cpuShotList';
 import cpuMode from '../cpu/cpuMode';
+import gameStates from '../data/gameStates';
 
 // obj is constantly resused in this file. 
 // I reset the values before each test
@@ -421,8 +422,8 @@ describe('Game Logic', () => {
 
   describe('cpuLogic.js', () => {
     it('Should fire randomly at player', () => {
-      cpuMode.pop();
-      cpuMode.push( 'search' );
+      gameStates.cpuMode.pop();
+      gameStates.cpuMode.push( 'search' );
 
       const square1 = document.createElement('div');
       square1.classList.add('target', 'atwo');

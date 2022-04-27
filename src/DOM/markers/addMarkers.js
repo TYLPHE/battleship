@@ -1,6 +1,8 @@
 import rmHighlight from "../highlighting/rmHighlight";
 import addHighlight from "../highlighting/addHighlight";
 import insertMarker from "./insertMarker";
+import cpuLogic from "../../cpu/cpuLogic";
+import ships from '../../data/constructor';
 
 function addMarkers(white, red) {
   const whiteElem = document.querySelector('.white-peg-cont');
@@ -38,7 +40,12 @@ function clickDragMarker(event, elem) {
 
     elem.style.display = 'none';
     let elemBelow = document.elementFromPoint(event.clientX, event.clientY);
-    if (elemBelow.id && elemBelow.id !== currentId) {
+    if (
+      elemBelow.id && 
+      elemBelow.id !== currentId && 
+      elemBelow.id !== 'white' && 
+      elemBelow.id !== 'red'
+      ) {
       currentId = elemBelow.id;
       rmHighlight();
       elemBelow.style.backgroundColor = 'green';
@@ -67,6 +74,14 @@ function clickDragMarker(event, elem) {
     }
     rmHighlight();
     document.removeEventListener('mousemove', onMouseMove);
+    
+    // cpu turn logic
+    if (markedDiv.classList.contains('dotted')) {
+      markedDiv.classList.remove('dotted');
+      // cpuLogic(ships);
+    }
+
+
     elem.onmouseup = null;
   }
 }

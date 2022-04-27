@@ -170,7 +170,7 @@ body{
 .inserted {
   width: 2rem;
   height: 2rem;
-  z-index: -1;
+  z-index: 1;
   background-color: lightgray;
   border-radius: 50%;
   border: 1px solid black;
@@ -293,4 +293,8 @@ body{
   } to {
     background-color: rgba(0, 255, 255, 0.80);
   }
+}
+.dotted {
+  border-radius: 50%;
+  border: 1px dashed;
 }

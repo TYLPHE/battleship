@@ -15,11 +15,11 @@ import registerHit from '../gameLogic/registerHit';
 import checkWin from '../gameLogic/checkWin';
 import randomSquare from "../gameLogic/randomSquare";
 import markBoard from "../DOM/cpuDOM/markBoard";
-import cpuMode from '../cpu/cpuMode';
 import huntMode from '../cpu/huntMode';
 import shipSunk from "./shipSunk";
 import cpuShotList from "../data/cpuShotList";
 import endGame from '../gameLogic/endGame';
+import gameStates from '../data/gameStates';
 
 function cpuLogic(obj, fromPlayer) {
   const pStatus = hitStatus(obj, fromPlayer);
@@ -30,20 +30,20 @@ function cpuLogic(obj, fromPlayer) {
   let winStatus = checkWin(obj);
   if (!winStatus) {
     let square;
-    if (cpuMode[0] === 'search') {
+    if (gameStates.cpuMode[0] === 'search') {
       square = randomSquare('shot');
     }
-    if (cpuMode[0] === 'hunt') {
+    if (gameStates.cpuMode[0] === 'hunt') {
       square = huntMode(obj);
       cpuShotList.push(square);
     }
     const cpuStatus = hitStatus(obj, 'cpu', square);
     markBoard(cpuStatus);
-    // TODO: mark board after cpu shoots
+
     if (cpuStatus.status === 'hit!') {
       registerHit(obj, cpuStatus, 'cpu');
-      cpuMode.pop()
-      cpuMode.push('hunt');
+      gameStates.cpuMode.pop();
+      gameStates.cpuMode.push('hunt');
       console.log('hunting...');
       shipSunk(obj, cpuStatus.ship);
       winStatus = checkWin(obj);

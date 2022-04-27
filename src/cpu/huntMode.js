@@ -3,7 +3,6 @@ import cpuShotList from "../data/cpuShotList";
 import randomDirection from "./placement/randomDirection";
 import numConvert from "../data/numConvert";
 import alphaConvert from "../data/alphaConvert";
-import cpuMode from '../cpu/cpuMode';
 
 function huntMode(obj) {
   let square;

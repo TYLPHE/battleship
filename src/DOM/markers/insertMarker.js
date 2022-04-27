@@ -13,17 +13,20 @@ function insertMarker(pos, peg){
       div.style.backgroundColor = 'rgb(149, 22, 22)';
       div.id = 'red';
     }
-    position.appendChild(div);
-    position.addEventListener('click', (e) => {
-      const color = e.target.childNodes[0].id; 
+
+    function rmPeg(e) {
+      const color = e.target.id; 
       if (color === 'white') {
         addMarkers(1, 0)
       }
       if (color === 'red') {
         addMarkers(0, 1);
       }
-      position.removeChild(div);
-    }, {once : true});
+      div.remove();
+    }
+
+    div.addEventListener('click', rmPeg, {once : true});    
+    position.appendChild(div);
   }
 }
 
