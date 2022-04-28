@@ -18,6 +18,13 @@ function battleLog() {
   battleCont.append(title, log);
   
   cont[1].appendChild(battleCont);
+
+  const storageLeft = document.createElement('div');
+  storageLeft.classList.add('ship-storage-left');
+  const storageRight = document.createElement('div');
+  storageRight.classList.add('ship-storage-right');
+  cont[0].append(storageLeft, storageRight);
+  cont[0].classList.add('storage-container');
 }
 
 export default battleLog;

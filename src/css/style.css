@@ -79,6 +79,7 @@ body{
   position: relative;
   width: var(--ship-square);
   height: 100%;
+  border: 1px solid;
 }
 
 .destroyer,
@@ -271,7 +272,7 @@ body{
   align-items: center;
   justify-content: center;
 }
-.side.instructions {
+.side.instructions.right-log {
   display: flex;
   justify-content: space-evenly;
   align-items: center;

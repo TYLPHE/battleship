@@ -18,7 +18,6 @@ import registerHit from '../gameLogic/registerHit';
 import cpuLogic from '../cpu/cpuLogic';
 import huntMode from '../cpu/huntMode';
 import cpuShotList from '../data/cpuShotList';
-import cpuMode from '../cpu/cpuMode';
 import gameStates from '../data/gameStates';
 
 // obj is constantly resused in this file. 

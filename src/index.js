@@ -8,6 +8,7 @@ import cpu from './cpu/cpu';
 import sendLog from './gameLogic/sendLog';
 import hitStatus from './gameLogic/hitStatus'
 import cpuShipPlacement from './cpu/placement/cpuPlacement';
+import startBtnLogic from './DOM/starter/startBtnLogic';
 
 // cell highlighting to eaily identify row and column
 highlightSides();
@@ -80,3 +81,6 @@ addMarkers(2*(100-17), 17*2);
 //     console.log(square);
 //   }
 // }
+
+// check cpu-graveyard
+// startBtnLogic(ship, 'cpu');

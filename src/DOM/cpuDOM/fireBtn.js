@@ -15,7 +15,6 @@ function fireBtn(obj) {
   firetxt1.textContent = 'FIRE'
   const firetxt2 = document.createElement('div');
   firetxt2.classList.add('fire-txt');
-  // firetxt2.textContent = 'MISSILE';
   fireBtn.append(firetxt1, firetxt2);
   fireCont.appendChild(fireBtn);
   cont[1].appendChild(fireCont);
@@ -31,7 +30,9 @@ function fireBtn(obj) {
       markSquare.classList.add('dotted');
     }
 
-    cpuLogic(obj);
+
+    // test cpu logic when pressing fire btn
+    // cpuLogic(obj);
 
   });
 }

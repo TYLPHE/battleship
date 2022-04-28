@@ -78,7 +78,12 @@ function clickDragMarker(event, elem) {
     // cpu turn logic
     if (markedDiv.classList.contains('dotted')) {
       markedDiv.classList.remove('dotted');
-      // cpuLogic(ships);
+      const log = document.querySelectorAll('.log-txt');
+      log[0].textContent = '';
+      log[1].textContent = '';
+      setTimeout(() => {
+        cpuLogic(ships);
+      }, 750);
     }
 
 
