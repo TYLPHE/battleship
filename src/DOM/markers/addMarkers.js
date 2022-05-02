@@ -3,6 +3,8 @@ import addHighlight from "../highlighting/addHighlight";
 import insertMarker from "./insertMarker";
 import cpuLogic from "../../cpu/cpuLogic";
 import ships from '../../data/constructor';
+import shipSunk from "../../cpu/shipSunk";
+import markGraveyard from "../../cpu/markGraveyard";
 
 function addMarkers(white, red) {
   const whiteElem = document.querySelector('.white-peg-cont');
@@ -63,7 +65,7 @@ function clickDragMarker(event, elem) {
 
   const clickedElem = event.target
   elem.onmouseup = function () {
-    // const elemBelow = document.elementFromPoint(event.clientX, event.clientY);
+    // places marker on the board and removes dragged marker
     const marked = markerPos();
     let markedDiv = document.querySelector(marked);
     if (document.body.lastChild.style.position === 'absolute' &&
@@ -78,14 +80,18 @@ function clickDragMarker(event, elem) {
     // cpu turn logic
     if (markedDiv.classList.contains('dotted')) {
       markedDiv.classList.remove('dotted');
+      // clear the player's log to prevent confusion
       const log = document.querySelectorAll('.log-txt');
       log[0].textContent = '';
       log[1].textContent = '';
+
+      // check to see if cpu sunk a boat. if yes, mark ship red
+      markGraveyard(ships);
+      
       setTimeout(() => {
         cpuLogic(ships);
       }, 750);
     }
-
 
     elem.onmouseup = null;
   }

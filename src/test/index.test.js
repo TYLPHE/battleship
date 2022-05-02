@@ -415,12 +415,12 @@ describe('Game Logic', () => {
 
       let status = hitStatus(obj, 'player');
       registerHit(obj, status, 'cpu');
-      expect(obj.p1.destroyer.hits).toEqual(['aone']);
+      expect(obj.p2.destroyer.hits).toEqual(['aone']);
     });
   });
 
   describe('cpuLogic.js', () => {
-    it('Should fire randomly at player', () => {
+    it('Should receive hit from player', () => {
       gameStates.cpuMode.pop();
       gameStates.cpuMode.push( 'search' );
 
@@ -446,7 +446,7 @@ describe('Game Logic', () => {
       const fromPlayer = 'player';
       cpuLogic(obj, fromPlayer);
 
-      expect(obj.p1.carrier.hits).toEqual(['aone']);
+      expect(obj.p2.carrier.hits).toEqual(['aone']);
     });
   });
 

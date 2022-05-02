@@ -1,4 +1,12 @@
 // battle log tells player what square they picked
+
+const shipLengths = {
+  cpucarrier: 5,
+  cpubattleship: 4,
+  cpucruiser: 3,
+  cpusubmarine: 3,
+  cpudestroyer: 2,
+}
 function battleLog() {
   const cont = document.querySelectorAll('.side.instructions');
   
@@ -19,12 +27,37 @@ function battleLog() {
   
   cont[1].appendChild(battleCont);
 
+  const cpuShipsTitle = document.createElement('div');
+  cpuShipsTitle.classList.add('cpu-ships-title');
+  cpuShipsTitle.textContent = 'CPU Ships';
+
+  const storageCont = document.createElement('div');
+  storageCont.classList.add('storage-container', 'cpu-grave-cont');
+
+
   const storageLeft = document.createElement('div');
-  storageLeft.classList.add('ship-storage-left');
+  storageLeft.classList.add('ship-storage-left', 'cpu-graveyard');
   const storageRight = document.createElement('div');
-  storageRight.classList.add('ship-storage-right');
-  cont[0].append(storageLeft, storageRight);
-  cont[0].classList.add('storage-container');
+  storageRight.classList.add('ship-storage-right', 'cpu-graveyard');
+  
+  storageCont.append(storageLeft, storageRight);
+  cont[0].append(cpuShipsTitle, storageCont);
+
+  for (let key in shipLengths) {
+    const ship = document.createElement('div');
+    ship.classList.add(key);
+    for (let i = 0; i < shipLengths[key]; i += 1) {
+      const square = document.createElement('div');
+      square.classList.add('ship-square');
+      ship.appendChild(square);
+    }
+    if (key === 'cpucarrier' || key === 'cpucruiser') {
+      storageRight.appendChild(ship);
+    } else {
+      storageLeft.appendChild(ship);
+    }
+  }
+
 }
 
 export default battleLog;

@@ -2,7 +2,7 @@
 // then add to ships object
 
 function registerHit(obj, hit, onPlayer) {
-  let p = (onPlayer === 'player') ? 'p2' : 'p1';
+  let p = (onPlayer === 'player') ? 'p1' : 'p2';
   if (hit.status && obj[p][hit.ship] !== undefined) {
     const hits = obj[p][hit.ship]['hits'];
     hits.push(hit.shot);

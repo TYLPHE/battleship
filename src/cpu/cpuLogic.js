@@ -9,7 +9,6 @@
   * if cpu hits, then registerHit()
   * checkWin() if not win, fromPlayer's turn
   */
-
 import hitStatus from "../gameLogic/hitStatus";
 import registerHit from '../gameLogic/registerHit';
 import checkWin from '../gameLogic/checkWin';
@@ -21,12 +20,7 @@ import cpuShotList from "../data/cpuShotList";
 import endGame from '../gameLogic/endGame';
 import gameStates from '../data/gameStates';
 
-function cpuLogic(obj, fromPlayer) {
-  const pStatus = hitStatus(obj, fromPlayer);
-  if (pStatus) {
-    registerHit(obj, pStatus, 'cpu');
-  }
-
+function cpuLogic(obj) {
   let winStatus = checkWin(obj);
   if (!winStatus) {
     let square;
@@ -41,21 +35,24 @@ function cpuLogic(obj, fromPlayer) {
     markBoard(cpuStatus);
 
     if (cpuStatus.status === 'hit!') {
-      registerHit(obj, cpuStatus, 'cpu');
+      registerHit(obj, cpuStatus, 'player');
       gameStates.cpuMode.pop();
       gameStates.cpuMode.push('hunt');
       console.log('hunting...');
-      shipSunk(obj, cpuStatus.ship);
+      shipSunk(obj, cpuStatus.ship, 'player');
       winStatus = checkWin(obj);
       console.log('checkwin: ', winStatus)
       if (winStatus) {
         console.log('CPU wins!');
         endGame(obj);
+        return;
       }
     }
   }
+  if (winStatus) {
+    console.log('player wins!');
+    endGame(obj)
+  }
 }
-    // console.log('player turn');
 
 export default cpuLogic;
-

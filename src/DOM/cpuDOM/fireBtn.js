@@ -1,6 +1,7 @@
 // add fire button
 import cpuLogic from '../../cpu/cpuLogic';
 import hitStatus from '../../gameLogic/hitStatus';
+import registerHit from '../../gameLogic/registerHit';
 import sendLog from '../../gameLogic/sendLog';
 
 function fireBtn(obj) {
@@ -23,7 +24,9 @@ function fireBtn(obj) {
     let response = hitStatus(obj, 'player');
     if (response) {
       sendLog(response);
-
+      if (response.status === 'hit!') {
+        registerHit(obj, response, 'cpu');
+      }
       // add indicator to show where to place marker
       // 'dotted' is removed in addMarkers.js
       let markSquare = document.querySelector(`#${response.shot}`);

@@ -74,12 +74,12 @@ body{
 .storage-container{
   display: flex;
   justify-content: space-evenly;
+
 }
 .ship-storage-left, .ship-storage-right {
   position: relative;
   width: var(--ship-square);
   height: 100%;
-  border: 1px solid;
 }
 
 .destroyer,
@@ -111,14 +111,14 @@ body{
   position: relative;
 }
 .ship-square {
+  border: 1px solid rgba(255, 255, 255, 0.493);
   box-sizing: border-box;
-  border: 1px solid;
   height: var(--ship-square);
   width: var(--ship-square);
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgba(196, 255, 237, 0.233);
+  background-color: rgba(192, 255, 236, 0.335);
 }
 .horizontal {
   display: flex;
@@ -298,4 +298,16 @@ body{
 .dotted {
   border-radius: 50%;
   border: 1px dashed;
+}
+.cpu-graveyard {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+}
+.cpu-ships-title {
+  text-align: center;
+  padding: 10px;
+}
+.cpu-grave-cont {
+  height: 90%;;
 }
