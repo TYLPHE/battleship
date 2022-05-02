@@ -78,7 +78,7 @@ function clickDragMarker(event, elem) {
     document.removeEventListener('mousemove', onMouseMove);
     
     // cpu turn logic
-    if (markedDiv.classList.contains('dotted')) {
+    if (markedDiv && markedDiv.classList.contains('dotted')) {
       markedDiv.classList.remove('dotted');
       // clear the player's log to prevent confusion
       const log = document.querySelectorAll('.log-txt');
@@ -87,7 +87,7 @@ function clickDragMarker(event, elem) {
 
       // check to see if cpu sunk a boat. if yes, mark ship red
       markGraveyard(ships);
-      
+
       setTimeout(() => {
         cpuLogic(ships);
       }, 750);

@@ -15,7 +15,8 @@ body{
   justify-content: center;
   align-items: center;
   margin: 0;
-  background-color: rgb(4, 18, 41);
+  /* background-color: rgb(4, 18, 41); */
+  background-color: black;
   color: white;
   user-select: none;
   gap: 1rem;
@@ -43,7 +44,6 @@ body{
 .avatar {
   border-radius: 50%;
   height: 2rem;
-  border: 1px solid;
 }
 
 /* board css */
@@ -52,6 +52,9 @@ body{
   border: 1px solid rgba(255, 255, 255, 0.250);
 }
 .half {
+  z-index: 0;
+  background-color: rgb(4, 18, 41);
+  border-radius: 10px;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -153,7 +156,7 @@ body{
   justify-content: center;
   align-items: center;
   color: black;
-  margin: -.62rem -.62rem;
+  margin: -.65rem -.65rem;
   background-color: rgb(218, 218, 218);
 }
 .red-peg {
@@ -165,7 +168,7 @@ body{
   justify-content: center;
   align-items: center;
   color: black;
-  margin: -.62rem -.68rem;
+  margin: -.7rem -.7rem;
   background-color: rgb(149, 22, 22);
 }
 .inserted {
