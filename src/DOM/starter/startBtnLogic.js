@@ -20,7 +20,6 @@ function startBtnLogic(obj, mode) {
 
 // snaps dragged ships into ocean
 function shipInsert(obj) {
-  console.log(obj)
   for (const key in obj.p1) {
     if (obj.p1[key].position.length) {
       for (let i = 0; i < obj.p1[key].position.length; i += 1) {

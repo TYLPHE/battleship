@@ -16,7 +16,6 @@ function cpu(ships) {
 //       let coord = ships.p2[key].position[i];
 //       const square = document.querySelector(`.${coord}`);
 //       square.classList.add(`cpu-${key}`);
-//       console.log(square);
 //     }
 //   }
 }

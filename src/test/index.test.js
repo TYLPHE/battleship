@@ -419,37 +419,6 @@ describe('Game Logic', () => {
     });
   });
 
-  describe('cpuLogic.js', () => {
-    it('Should receive hit from player', () => {
-      gameStates.cpuMode.pop();
-      gameStates.cpuMode.push( 'search' );
-
-      const square1 = document.createElement('div');
-      square1.classList.add('target', 'atwo');
-
-      const square2 = document.createElement('div');
-      square2.classList.add('target', 'bone');
-
-      const shot = document.createElement('div');
-      shot.classList.add('targeting');
-      shot.id = 'aone';
-      document.body.appendChild(shot, square1, square2);
-
-      obj.p2.carrier.position = [
-        'aone',
-        'atwo',
-        'athree',
-        'afour',
-        'afive',
-      ];
-      
-      const fromPlayer = 'player';
-      cpuLogic(obj, fromPlayer);
-
-      expect(obj.p2.carrier.hits).toEqual(['aone']);
-    });
-  });
-
   describe('huntMode.js', () => {
     it('Should target near the hit ship', () => {
       obj.p1.carrier.position = ['aone', 'bone', 'cone', 'done', 'eone'];

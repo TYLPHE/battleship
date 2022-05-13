@@ -9,13 +9,24 @@
 - [Link to the Assignment](https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/battleship)
 
 ## Features
-- 
+- Simulates real gameplay by creating click-and-drag ships and markers
+- CPU mode actively hunts to sink ship after a hit
+- 2-player mode by loading separate browsers
 
 ## About
+Battleship is assigned to focus on testing cpu and game logic with Jest. I also wanted to simulate the actual board game by giving the player the ability to manage their ship and marker placements.
 
+The CPU will also hunt try to sink the ship after hitting it, which more closely resembles how a human player would play this game.
 
 ## Challenges
 ### CSS - Click and drag
+When I think about Battleship the board game, I was reminded of my childhood and how fun it was to keep track of my own pieces. The feeling of placing the pegs in the right square was what made the game fun for me. I wanted to simulate that feeling in this project by creating elements that were draggable by mouse. This turned out to be a deep challenge but a very satisfying one to face.
+
+I used [this particular guide](https://javascript.info/mouse-drag-and-drop) to help me get started. Sure, it is easy to follow the code, but to interpret this code and translate it into the way I wrote Battleship was a different story.
+
+I needed to make the click-and-drag elements as easy to interpret for the user as possible. to do so, I needed to incorporate highlighting and error handling. You can [navigate to my code](https://github.com/TYLPHE/battleship/blob/main/src/DOM/ship/clickDrag.js) to see how I handle highlighting, as well as error handling. For example, the app crashes if the dragging DOM cannot stay under the mouse (in the case where the user drags the element but flicks their mouse really fast back and forth).
+
+For extra practice, I recreated the click-and-drag feature for marker placement. [You can find it here](https://github.com/TYLPHE/battleship/blob/main/src/DOM/markers/addMarkers.js)
 
 ### CSS - box-sizing: border-box
 For this project, I am using HTML to create each invididual box seen on the top and bottom halves. Each element is arranged using `display: flex`. Originally, I had the boxes calculate to the size of 100% / 12 (boxes per row) - 2px. This, however did not work when the whole webpage is resized under 100%.

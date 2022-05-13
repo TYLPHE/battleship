@@ -38,19 +38,19 @@ function cpuLogic(obj) {
       registerHit(obj, cpuStatus, 'player');
       gameStates.cpuMode.pop();
       gameStates.cpuMode.push('hunt');
-      console.log('hunting...');
+      // console.log('hunting...');
       shipSunk(obj, cpuStatus.ship, 'player');
       winStatus = checkWin(obj);
-      console.log('checkwin: ', winStatus)
+      // console.log('checkwin: ', winStatus)
       if (winStatus) {
-        console.log('CPU wins!');
+        // console.log('CPU wins!');
         endGame(obj);
         return;
       }
     }
   }
   if (winStatus) {
-    console.log('player wins!');
+    // console.log('player wins!');
     endGame(obj)
   }
 }

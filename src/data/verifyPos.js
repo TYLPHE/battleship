@@ -1,7 +1,6 @@
 // ship changes color to red if dragged over invalid space
  
 function verifyPos(activeShip, obj) {
-  // console.log(obj['p1'][activeShip]);
   const shipObj = obj['p1'][activeShip];
   const ship = document.querySelector(`.${activeShip}`);
   if (shipObj.length === shipObj.position.length) {

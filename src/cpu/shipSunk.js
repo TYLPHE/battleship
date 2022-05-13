@@ -17,14 +17,6 @@ function shipSunk(obj, ship, shipOwner) {
     const cpuShip = document.querySelector(`.cpu${ship}`);
     cpuShip.style.backgroundColor = 'black';
   }
-  // if (obj.p1[ship].length === obj.p1[ship].hits.length) {
-  //   console.log(`CPU sunk your ${ship}!`);
-  //   obj.p1[ship].sunk = true;
-  //   // 
-  //   gameStates.cpuMode.pop();
-  //   gameStates.cpuMode.push('search');
-  //   console.log('searching...');
-  // }
 }
 
 export default shipSunk;
