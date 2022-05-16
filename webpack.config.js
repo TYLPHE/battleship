@@ -5,10 +5,6 @@ module.exports = {
   mode: 'development',
   entry: {
     index: './src/index.js',
-    // pageLayout: './src/pageLayout.js',
-    // highlighter: './src/DOM/highlightSides.js',
-    // clickDrag: './src/ship/clickDrag.js',
-    // addShip: './src/DOM/addShip.js',
   },
   plugins: [
     new HtmlWebpackPlugin({
