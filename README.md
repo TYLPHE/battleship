@@ -4,7 +4,7 @@
 ![](https://github.com/TYLPHE/TYLPHE/blob/main/readmeAssets/battleship.gif)
 
 ## Links
-- [Try Battleship here!](https://TYLPHE.github.io/battleship/dist/)
+- [Try Battleship here!](https://tylphe.github.io/battleship/)
 
 - [Link to the Assignment](https://www.theodinproject.com/paths/full-stack-javascript/courses/javascript/lessons/battleship)
 
