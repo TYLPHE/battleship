@@ -60,7 +60,7 @@ That's some cool webpack stuff! I also learned that I dont need to export everyt
 
 ### Babel - Could not "export default" & "import * from" with Jest.
 Because I learned Webpack before Jest, I learned how to export my code like this:
-```
+```javascript
 function test() {
   // test
 }
@@ -69,7 +69,7 @@ export default test;
 ```
 
 To import it to a different file, I use this:
-```
+```javascript
 import test from './test';
 
 function main(){
@@ -78,7 +78,7 @@ function main(){
 ```
 
 Jest, however seemed like it was using an older way of importing and exporting files. It was not accepting the newer ES6 format. I needed to use:
-```
+```javascript
 function test() {
   // test
 }
@@ -87,7 +87,7 @@ module.exports = test;
 ```
 
 and import it like this:
-```
+```javascript
 let test = require('./test');
 
 function main() {
@@ -105,11 +105,11 @@ I learned to install babel into my project by using:
 
 Next, I created a new `.babelrc` file within my project with the following content:
 
-```
+```javascript
 {
-  ""env"": {
-    ""test"": {
-      ""plugins"": [""@babel/plugin-transform-modules-commonjs""]
+  "env": {
+    "test": {
+      "plugins": [""@babel/plugin-transform-modules-commonjs""]
     }
   }
 }
@@ -124,7 +124,7 @@ This project requires a CPU. This is the greatest challenge becuase I've been do
 
 For example, I have a function called `randomSquare()`. It selects a random square. Pretty simple, right? With testing, however, I can call this function 1000 times:
 
-```
+```javascript
   describe('randomSquare.js', () => {
     it('Should return a valid coordinate', () => {
       let numRef = [
